@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PsychicVideo</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gcm_send_message">hello</string>
+    <string name="token_error_message">error aya</string>
+
+    <string name="title_activity_tutorial">TutorialActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="red">first</string>
+    <string name="blue">second</string>
+    <string name="green">third</string>
+</resources>

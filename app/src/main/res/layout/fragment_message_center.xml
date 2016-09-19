@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.MessageCenter">
+
+    <SearchView
+        android:id="@+id/message_center_searchview"
+        android:layout_width="match_parent"
+        android:searchIcon="@drawable/zzz_account_search"
+        android:layout_height="wrap_content"/>
+    <ListView
+        android:id="@+id/message_center_list"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

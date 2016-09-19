@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="10dp"
+    android:background="@android:color/transparent">
+    ​
+
+    <!--<android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="129dp">-->
+
+    <RelativeLayout
+        android:id="@+id/inner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+        ​
+
+        <FrameLayout
+            android:id="@+id/image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            ​
+
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/advisor_image"
+                android:layout_width="150dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:padding="3dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/images"
+                app:sriv_left_bottom_corner_radius="15dp"
+                app:sriv_left_top_corner_radius="15dp"
+                app:sriv_right_bottom_corner_radius="15dp"
+                app:sriv_right_top_corner_radius="15dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+            <ImageView
+                android:id="@+id/oflline_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:src="@color/offline_overlay"/>
+
+            <com.joooonho.SelectableRoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="bottom"
+                android:src="@color/ratingbarbg"
+                app:sriv_left_bottom_corner_radius="15dp"
+                app:sriv_left_top_corner_radius="0dp"
+                app:sriv_right_bottom_corner_radius="15dp"
+                app:sriv_right_top_corner_radius="0dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="5dp"
+                android:weightSum="2"
+                android:layout_height="wrap_content">
+
+                <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                    android:id="@+id/ratingbar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="80dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1.8"
+                    android:layout_marginTop="7dp"
+                    android:max="5"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:stepSize="1.0"
+                    app:starBorderWidth="1"
+                    tools:layout_editor_absoluteX="5dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                
+                <ImageView
+                    android:id="@+id/vi_verified_status"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/blue"
+                    android:enabled="false"
+                    android:layout_margin="2dp"
+                    android:visibility="visible"
+                    tools:layout_editor_absoluteX="145dp"
+                    tools:layout_editor_absoluteY="105dp" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/middle_layout"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_layout"
+            android:background="@color/transparent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="130dp">
+
+            <TextView
+                android:id="@+id/tvusername"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:gravity="center_vertical"
+                android:paddingTop="5dp"
+                android:singleLine="true"
+                android:text="sasha grey"
+                fontPath="MyriadPro-Cond.otf"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/text_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/middle_layout"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="149dp">
+            <TextView
+                android:id="@+id/tvoutertext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="8dp"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:typeface="sans"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

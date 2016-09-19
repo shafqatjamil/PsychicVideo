@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/message_center_item_inner"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/usermessagebg"
+        android:visibility="gone">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/message_center_item_image"
+            app:sriv_left_bottom_corner_radius="15dp"
+            app:sriv_left_top_corner_radius="15dp"
+            app:sriv_right_bottom_corner_radius="15dp"
+            app:sriv_right_top_corner_radius="15dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/five_dp"
+            android:layout_marginLeft="@dimen/five_dp"
+            android:layout_marginRight="@dimen/five_dp"
+            android:layout_marginStart="@dimen/five_dp"
+            android:layout_marginTop="05dp"
+            android:clickable="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" />
+        <TextView
+            android:id="@+id/message_center_item_last_texter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="you"
+            android:layout_toRightOf="@+id/message_center_item_image"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"/>
+        <TextView
+            android:id="@+id/message_center_item_last_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="acha"
+            android:layout_toRightOf="@+id/message_center_item_image"
+            android:layout_below="@+id/message_center_item_last_texter_name"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="10sp"
+            android:textColor="@color/colorPrimary"/>
+        <com.github.curioustechizen.ago.RelativeTimeTextView
+            android:id="@+id/message_center_item_last_text_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12-15-2016-05-05"
+            android:gravity="right"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="8dp"
+            android:textSize="8sp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/message_center_advisor_item"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:visibility="visible"
+        android:background="@drawable/usermessagebg">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: "
+                android:layout_gravity="left"
+                android:textColor="@color/black"/>
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:id="@+id/message_center_item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23/06/2016, 6:06 PM "
+                android:layout_marginRight="20dp"
+                android:textColor="@color/colorPrimary"/>
+            <TextView
+                android:id="@+id/message_center_item_is_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="                  COMPLETE "
+                android:layout_gravity="right"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From: "
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/message_center_item_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shafqat "
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorPrimary"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DOB: "
+                android:layout_gravity="center"
+                android:layout_marginLeft="60dp"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/message_center_item_is_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12-12-1333 "
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Message: "
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/message_center_item_messgage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hi "
+                android:singleLine="true"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorPrimary"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Video Order: "
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/message_center_item_video_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="yes "
+                android:layout_marginRight="10dp"
+                android:textColor="@color/colorPrimary"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

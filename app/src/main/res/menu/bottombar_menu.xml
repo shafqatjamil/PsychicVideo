@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottomBarItemOne"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/bottomBarItemTwo"
+        android:icon="@drawable/message"
+        android:title="Mail" />
+    <item
+        android:id="@+id/bottomBarItemThree"
+        android:icon="@drawable/news"
+        android:title="News" />
+    <item
+        android:id="@+id/bottomBarItemFour"
+        android:icon="@drawable/dailytarot"
+        android:title="Horoscope" />
+</menu>

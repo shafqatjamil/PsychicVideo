@@ -1,0 +1,50 @@
+{
+  "project_info": {
+    "project_number": "349995245925",
+    "firebase_url": "https://mytarotadvisor-f863e.firebaseio.com",
+    "project_id": "mytarotadvisor-f863e",
+    "storage_bucket": "mytarotadvisor-f863e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349995245925:android:3c39f04ef7b404c3",
+        "android_client_info": {
+          "package_name": "com.liquidsoftwaremobile.mytarotadvisor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349995245925-rao2j9mu2m8lq6ql884d088k8g78e75g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.liquidsoftwaremobile.mytarotadvisor",
+            "certificate_hash": "E7DCE684A49D379D4895E89F21BE91AA9ADC2582"
+          }
+        },
+        {
+          "client_id": "349995245925-dgghsdpc8o0bqr92lfcggeqdpjh9dc4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6xZAInSp-GE5EByeCz7NrQqzmhzewRjo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

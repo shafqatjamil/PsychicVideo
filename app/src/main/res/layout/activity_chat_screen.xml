@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tool_bar"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <!--android:stackFromBottom="true"-->
+        <ListView
+            android:id="@+id/comments_listView"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:background="@color/white"
+            android:dividerHeight="1dp"
+            android:transcriptMode="alwaysScroll" />
+
+        <LinearLayout
+            android:id="@+id/form"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:addStatesFromChildren="true"
+            android:background="@color/white"
+            android:baselineAligned="false"
+            android:descendantFocusability="afterDescendants"
+            android:orientation="vertical"
+            android:paddingBottom="4dp">
+
+
+            <TextView
+                android:id="@+id/cost_info"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:text="you are requesting text reply 150 credit"
+                android:textColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <ImageView
+                    android:id="@+id/enable_chat"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/chat_button" />
+
+                <ImageView
+                    android:id="@+id/enable_video"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/video_button" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/chat_layout"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/messageEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/sendMessageButton"
+                    android:layout_toStartOf="@+id/sendMessageButton"
+                    android:ems="10"
+                    android:maxHeight="80dp"
+                    android:gravity="bottom"
+                    android:textColor="@color/colorPrimary" />
+
+                <ImageView
+                    android:id="@+id/sendMessageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/white"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/send_button"/>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/start_video_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="Request Video Message"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

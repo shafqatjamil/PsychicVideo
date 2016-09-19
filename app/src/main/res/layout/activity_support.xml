@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_support"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="avreye.mytarotadvisor.ui.SupportActivity">
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/navbarbg"
+        android:scaleType="fitStart"
+        android:id="@+id/imageView4"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_support"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toTopOf="@+id/activity_support"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/activity_support"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        android:layout_marginBottom="14dp"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:text="Support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Toolbar.Title"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:typeface="sans"
+        tools:text="Credits"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView4"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+    <TextView
+        android:text="Message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_support"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toTopOf="@+id/activity_support"
+        android:layout_marginTop="72dp"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/activity_support"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintHorizontal_bias="0.1" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="248dp"
+        android:inputType="textPersonName"
+        android:text="message"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:textAlignment="center"
+        android:textColor="?attr/colorPrimary"
+        tools:background="@android:drawable/editbox_dropdown_light_frame"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_support"
+        android:layout_marginStart="33dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:layout_marginTop="16dp"
+        app:layout_constraintRight_toRightOf="@+id/activity_support"
+        android:layout_marginEnd="33dp"
+        tools:layout_constraintRight_creator="1" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:hint="email"
+        android:textColor="?attr/colorPrimary"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:textAlignment="center"
+        android:typeface="sans"
+        android:background="@android:drawable/editbox_dropdown_light_frame"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_support"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        android:layout_marginTop="32dp"
+        app:layout_constraintRight_toRightOf="@+id/activity_support"
+        tools:layout_constraintRight_creator="1" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_support"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/editText2"
+        android:layout_marginTop="16dp"
+        app:layout_constraintRight_toRightOf="@+id/activity_support"
+        tools:layout_constraintRight_creator="1" />
+
+    <CheckBox
+        android:text="Reporting Issue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox2"
+        android:textColor="@color/colorPrimary"
+        android:checked="true"
+        app:layout_constraintRight_toRightOf="@+id/editText"
+        android:layout_marginEnd="1dp"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/editText"
+        android:layout_marginBottom="10dp"
+        tools:layout_constraintBottom_creator="1" />
+
+</android.support.constraint.ConstraintLayout>

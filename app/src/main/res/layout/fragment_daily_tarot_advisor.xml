@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@drawable/daily_tarot">
+    <TextView
+        android:id="@+id/dailytarot_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:textColor="@color/text_orange"
+        android:gravity="center|center_horizontal"
+        android:textSize="30sp"
+        android:text="Jun 13, 2016"
+        android:textAlignment="center" />
+    <FrameLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+        <ImageView
+            android:id="@+id/daily_tarot_video_thumbnail"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
+        <ImageView
+            android:id="@+id/daily_tarot_video_play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/play" />
+
+
+    </FrameLayout>
+</LinearLayout>

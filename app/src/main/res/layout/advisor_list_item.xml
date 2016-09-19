@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/advisor_list_item_bg">
+
+    <ImageView
+        android:layout_width="170dp"
+        app:srcCompat="@color/white"
+        android:id="@+id/image_view_white_bg"
+        android:layout_height="130dp"
+        app:layout_constraintTop_toTopOf="@+id/advisor_list_item_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/advisor_list_item_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/advisor_list_item_bg"
+        app:layout_constraintRight_toRightOf="@+id/advisor_list_item_bg"/>
+    <com.joooonho.SelectableRoundedImageView
+        android:id="@+id/advisor_image"
+        android:layout_width="170dp"
+        app:layout_constraintTop_toTopOf="@+id/image_view_white_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_white_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/image_view_white_bg"
+        app:layout_constraintRight_toRightOf="@+id/image_view_white_bg"
+        android:layout_height="130dp"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:srcCompat="@drawable/blue"
+        android:id="@+id/vi_verified_status"
+        app:layout_constraintLeft_toLeftOf="@+id/advisor_image"
+        app:layout_constraintRight_toRightOf="@+id/advisor_image"
+        app:layout_constraintBottom_toBottomOf="@+id/advisor_image"
+        app:layout_constraintTop_toTopOf="@+id/advisor_image"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHorizontal_bias="1.0" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvusername"
+        android:textAllCaps="true"
+        android:textColor="@color/aluminum"
+        app:layout_constraintRight_toRightOf="@+id/image_view_white_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/advisor_image"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_white_bg"
+        app:layout_constraintTop_toTopOf="@+id/image_view_white_bg"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.1"
+        android:textSize="12sp" />
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvoutertext"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintRight_toRightOf="@+id/image_view_white_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/advisor_image"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_white_bg"
+        app:layout_constraintTop_toTopOf="@+id/image_view_white_bg"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.1"
+        android:textSize="14sp" />
+
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingbar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        app:layout_constraintTop_toTopOf="@+id/image_view_white_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_white_bg"
+        app:layout_constraintRight_toRightOf="@+id/image_view_white_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/image_view_white_bg"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.9"
+        android:numStars="5"
+        android:rating="4.5" />
+</android.support.constraint.ConstraintLayout>
