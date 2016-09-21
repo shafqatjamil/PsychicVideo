@@ -37,7 +37,6 @@ public class IabException extends Exception {
     public IabException(int response, String message, Exception cause) {
         this(new IabResult(response, message), cause);
     }
-
     /** Returns the IAB result (error) that this exception signals. */
     public IabResult getResult() { return mResult; }
 }

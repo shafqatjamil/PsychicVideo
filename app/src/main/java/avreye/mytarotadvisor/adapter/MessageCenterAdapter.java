@@ -3,7 +3,6 @@ package avreye.mytarotadvisor.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import avreye.mytarotadvisor.Object.AdvisorProfilePictureResponse;
 import avreye.mytarotadvisor.R;
-import avreye.mytarotadvisor.helper.APIService;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.helper.UserSession;
-import avreye.mytarotadvisor.ui.ChatActivity;
+import avreye.mytarotadvisor.ui.ChatActivityforAdvisor;
+import avreye.mytarotadvisor.ui.ChatActivityforUser;
 import avreye.mytarotadvisor.utils.Constants;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -171,29 +166,6 @@ public class MessageCenterAdapter extends BaseAdapter {
 
             viewHolder.textView_last_text_time.setText(steTime.substring(0,steTime.length()-5));
 
-               // viewHolder.textView_last_text_time.setText(UserList.get(position).getDate());
-
-
-            ///////////////////////////
-
-//            APIService apiservice = retrofit.create(APIService.class);
-//            Call<AdvisorProfilePictureResponse> APICall = apiservice.getAdvisorPicture(advisorid);
-//            APICall.enqueue(new Callback<AdvisorProfilePictureResponse>() {
-//                @Override
-//                public void onResponse(Call<AdvisorProfilePictureResponse> call, Response<AdvisorProfilePictureResponse> response) {
-//
-//                    if (response.body() != null) {
-//                        String imageUri = Constants.Advisor_IMAGE_URL + response.body().getMessage();
-//                        Picasso.with(mContext).load(imageUri).into(viewHolder.selectableRoundedImageView);
-//
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<AdvisorProfilePictureResponse> call, Throwable t) {
-//                }
-//            });
-            ///////////////////////
 
             Picasso.with(mContext).load(userSession.getUserProfilePictureUrl(advisorid)).into(viewHolder.selectableRoundedImageView);
 
@@ -206,7 +178,7 @@ public class MessageCenterAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    Intent intent = new Intent(mContext, ChatActivityforUser.class);
                     intent.putExtra("advisor_id", advisorid);
                     intent.putExtra("advisor_name", advisorname);
                     mContext.startActivity(intent);
@@ -219,7 +191,7 @@ public class MessageCenterAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    Intent intent = new Intent(mContext, ChatActivityforUser.class);
                     intent.putExtra("advisor_id", advisorid);
                     intent.putExtra("advisor_name", advisorname);
                     mContext.startActivity(intent);
@@ -287,10 +259,19 @@ public class MessageCenterAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(mContext, ChatActivity.class);
-                    intent.putExtra("advisor_id", advisorid);
-                    intent.putExtra("advisor_name", advisorname);
-                    mContext.startActivity(intent);
+                    if(userSession.getUserType().contains("client")) {
+                        Intent intent = new Intent(mContext, ChatActivityforUser.class);
+                        intent.putExtra("advisor_id", advisorid);
+                        intent.putExtra("advisor_name", advisorname);
+                        mContext.startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(mContext, ChatActivityforAdvisor.class);
+                        intent.putExtra("advisor_id", advisorid);
+                        intent.putExtra("advisor_name", advisorname);
+                        mContext.startActivity(intent);
+                    }
                 }
             });
 

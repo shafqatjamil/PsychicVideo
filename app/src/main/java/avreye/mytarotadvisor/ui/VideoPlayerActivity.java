@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -21,11 +22,14 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     Toolbar toolbar;
 
+    UserSession mUserSession;
+    private TextView MyCredits;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
 
+        mUserSession = new UserSession(this);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -58,6 +62,21 @@ public class VideoPlayerActivity extends AppCompatActivity {
         });
 
         videoView.start();
+
+
+
+
+        MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
+        if(mUserSession.getUserType().contains("advisor"))
+        {
+            MyCredits.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.INVISIBLE);
+            textView_credits.setVisibility(View.INVISIBLE);
+
+
+        }
 
     }
 

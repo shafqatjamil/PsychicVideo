@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:349995245925:android:3c39f04ef7b404c3",
         "android_client_info": {
-          "package_name": "com.liquidsoftwaremobile.mytarotadvisor"
+          "package_name": "com.liquidsoftwaremobile.tarotadvisor"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "349995245925-rao2j9mu2m8lq6ql884d088k8g78e75g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.liquidsoftwaremobile.mytarotadvisor",
+            "package_name": "com.liquidsoftwaremobile.tarotadvisor",
             "certificate_hash": "E7DCE684A49D379D4895E89F21BE91AA9ADC2582"
           }
         },

@@ -108,7 +108,7 @@
             android:enabled="true" />
 
         <activity
-            android:name=".ui.ChatActivity"
+            android:name=".ui.ChatActivityforUser"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -167,8 +167,13 @@
         <activity
             android:name=".ui.AdvisorAvailabilityActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ui.AdvisorRating"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".ui.AdvisorRating"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.ChatActivityforAdvisor"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

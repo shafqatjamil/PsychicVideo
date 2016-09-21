@@ -73,7 +73,7 @@ public class CreditScreenAdapter extends BaseAdapter {
                 public void onClick(View v) {
 
 /*
-                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    Intent intent = new Intent(mContext, ChatActivityforUser.class);
                     intent.putExtra("advisor_id", advisorid);
                     intent.putExtra("advisor_name", advisorname);
                     mContext.startActivity(intent);

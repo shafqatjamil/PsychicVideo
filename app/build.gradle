@@ -4,22 +4,15 @@ buildscript {
         jcenter() // or mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-rc1'
+        classpath 'com.android.tools.build:gradle:2.2.0'
     }
 }
 android {
-    signingConfigs {
-        psychicvideokeystore {
-            keyAlias 'psychicvideo'
-            keyPassword '12345'
-            storeFile file('psychicvideokeystore')
-            storePassword '12345'
-        }
-    }
+
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
     defaultConfig {
-        applicationId "com.liquidsoftwaremobile.mytarotadvisor"
+        applicationId "com.liquidsoftwaremobile.tarotadvisor"
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
@@ -28,7 +21,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

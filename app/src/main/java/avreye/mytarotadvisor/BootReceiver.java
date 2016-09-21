@@ -17,5 +17,4 @@ public class BootReceiver extends BroadcastReceiver {
 //        Toast.makeText(context,"dgasgdfsagdf",Toast.LENGTH_SHORT).show();
 //        Log.i("PubnubService", "PubNub BootReceiver Started");
     }
-
 }
