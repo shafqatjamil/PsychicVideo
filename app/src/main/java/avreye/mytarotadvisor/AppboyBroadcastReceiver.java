@@ -33,7 +33,7 @@ public class AppboyBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         Log.d(TAG, String.format("Received intent with action %s", action));
 
-        if (pushReceivedAction.equals(action)) {
+        if (pushReceivedAction.equals(action)) {  
             Log.d(TAG, "Received push notification.");
             if (AppboyNotificationUtils.isUninstallTrackingPush(intent.getExtras())) {
                 Log.d(TAG, "Got uninstall tracking push");
