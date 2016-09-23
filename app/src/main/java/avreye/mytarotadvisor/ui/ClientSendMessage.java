@@ -364,7 +364,7 @@ public class ClientSendMessage extends AppCompatActivity {
         Message message = new Message(0, payload.getPnApns().getAps().getSenderId(), payload.getPnApns().getAps().getSenderDisplayname(),
                 payload.getReceiverId(), payload.getReceiverDisplayname(), payload.getMsgText(), payload.getMsgDate(), Integer.parseInt(payload.getStatus()),
                 payload.getVideoUrl(), "video", payload.getSenderType(), payload.getReceiverType(), payload.getReviewStatus(),
-                MessageReviewID, "" + (Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())));
+                MessageReviewID, "" + (Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())),payload.getDob());
 
         databaseHelper.insertMessageToDB(message);
         JSONObject jsonObject = null;

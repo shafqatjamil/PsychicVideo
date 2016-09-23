@@ -93,7 +93,6 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
     Retrofit retrofit;
     Retrofit retrofit1;
     private ProgressDialog progressDialog;
-    private UserSession mUserSession;
     ImageButton imageButoon_Camera;
     ImageButton imageButoon_Send;
     EditText editText_advisor_message;
@@ -114,7 +113,6 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
         VideoName = "";
         MessageType = "text";
         setContentView(R.layout.activity_chat_activityfor_advisor);
-        mUserSession = new UserSession(this);
         isVideoAttached = false;
         progressDialog = new ProgressDialog(ChatActivityforAdvisor.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -258,6 +256,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
 
 
 
+
         payload.setMessageType(MessageType);
         payload.setMsgDate( mFormatter.format(date));
 
@@ -274,12 +273,13 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
         payload.setReviewStatus("0");
         payload.setVideoUrl(ChatActivityforAdvisor.VideoName);
         payload.setReviewId(MessageReviewID);
+        payload.setDob("");
 
 
         final Message message = new Message(0,payload.getPnApns().getAps().getSenderId(),payload.getPnApns().getAps().getSenderDisplayname(),
                 payload.getReceiverId(),payload.getReceiverDisplayname(),payload.getMsgText(),payload.getMsgDate(),Integer.parseInt(payload.getStatus()),
                 payload.getVideoUrl(),payload.getMessageType(),payload.getSenderType(),payload.getReceiverType(),payload.getReviewStatus(),
-                MessageReviewID,""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())));
+                MessageReviewID,""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())),payload.getDob());
 
         messages.add(message);
         advisorChatActivityAdapter.SetMessagesArrayList(messages);
@@ -382,7 +382,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
             Message message1 = new Message(2,payload.getPnApns().getAps().getSenderId(),payload.getPnApns().getAps().getSenderDisplayname(),
                     payload.getReceiverId(),payload.getReceiverDisplayname(),payload.getMsgText(),payload.getMsgDate(),Integer.parseInt(payload.getStatus()),
                     payload.getVideoUrl(),payload.getMessageType(),payload.getSenderType(),payload.getReceiverType(),payload.getReviewStatus(),
-                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())) );
+                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())) ,payload.getDob());
 
             Log.e("senderid",payload.getSenderId());
             if(payload.getSenderId().contains(AdvisorID))

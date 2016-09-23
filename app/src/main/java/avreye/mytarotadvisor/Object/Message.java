@@ -19,6 +19,7 @@ public class Message{
     private  String review_status;
     private  String message_review_id;
     private String rid;
+    private String dob;
     public Message()
     {
         this.id = 0;
@@ -36,11 +37,12 @@ public class Message{
         this.review_status = "";
         this.message_review_id = "";
         rid = "";
+        this.dob = "";
     }
     public Message(int id, String sender_id, String sender_display_name, String reciever_id,
                    String reciever_display_name, String text, String date, int status, String url,
                    String type, String sender_type, String reciever_type, String review_status,
-                   String message_review_id, String rid)
+                   String message_review_id, String rid, String dob)
     {
         this.id = id;
         this.sender_id = sender_id;
@@ -57,6 +59,15 @@ public class Message{
         this.review_status = review_status;
         this.message_review_id = message_review_id;
         this.rid = rid;
+        this.dob = dob;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     public String getRid() {

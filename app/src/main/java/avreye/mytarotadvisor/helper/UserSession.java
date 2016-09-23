@@ -157,7 +157,6 @@ public class UserSession {
         spEditor.apply();
         return true;
     }
-
     public String getUserChannelName() {
         return sp.getString(USER_CHANNEL_NAME, "");
     }

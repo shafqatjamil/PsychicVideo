@@ -61,6 +61,18 @@ public class Payload {
     @Expose
     private String reponseTime;
 
+    @SerializedName("client_dob")
+    @Expose
+    private String dob;
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     public String getReponseTime() {
         return reponseTime;
     }
@@ -96,6 +108,7 @@ public class Payload {
                 ", \"video_url\":\"" + videoUrl + '\"' +
                 ", \"message_review_id\":\"" + reviewId + '\"' +
                 ", \"response_time\":\"" + reponseTime + '\"' +
+                ", \"client_dob\":\"" + dob + '\"' +
                 '}';
     }
 

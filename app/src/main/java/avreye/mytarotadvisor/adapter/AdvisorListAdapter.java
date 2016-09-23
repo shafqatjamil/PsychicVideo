@@ -55,7 +55,7 @@ public class AdvisorListAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
-                    mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+                    mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.video_item, null);
             viewHolder = new ViewHolder();
             viewHolder.selectableRoundedImageView = (SelectableRoundedImageView) convertView.findViewById(R.id.advisor_image);

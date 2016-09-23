@@ -99,7 +99,7 @@ public class PubnubService extends Service {
                             avreye.mytarotadvisor.Object.Message message1 = new avreye.mytarotadvisor.Object.Message(2,payload.getPnApns().getAps().getSenderId(),payload.getPnApns().getAps().getSenderDisplayname(),
                                     payload.getReceiverId(),payload.getReceiverDisplayname(),payload.getMsgText(),payload.getMsgDate(),Integer.parseInt(payload.getStatus()),
                                     payload.getVideoUrl(),payload.getMessageType(),payload.getSenderType(),payload.getReceiverType(),payload.getReviewStatus(),
-                                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())) );
+                                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())),payload.getDob() );
                             databaseHelper.insertMessageToDB(message1);
                             if(appController.GetActivity() == null)
                             {

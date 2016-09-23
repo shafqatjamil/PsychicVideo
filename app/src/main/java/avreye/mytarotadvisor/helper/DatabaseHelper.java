@@ -42,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String KEY_REVIEW_STATUS = "review_status";
 	private static final String KEY_MESSAGE_REVIEW_ID = "message_review_id";
     private static final String KEY_RID = "rid";
+    private static final String KEY_DOB = "dob";
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,7 +67,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + KEY_RECIEVER_TYPE + " VARCHAR(10),"
                 + KEY_REVIEW_STATUS + " VARCHAR(10),"
 				+ KEY_MESSAGE_REVIEW_ID + " VARCHAR(50),"
-                + KEY_RID + " VARCHAR(50)"
+                + KEY_RID + " VARCHAR(50),"
+                + KEY_DOB + " VARCHAR(15)"
 				+ " )";
 
 		db.execSQL(CREATE_FAVOURITE_TABLE);
@@ -99,6 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(KEY_REVIEW_STATUS, message.getReview_status());
 		cv.put(KEY_MESSAGE_REVIEW_ID, message.getMessage_review_id());
 		cv.put(KEY_RID, message.getRid());
+		cv.put(KEY_DOB, message.getDob());
 		db.insert(TABLE_MESSAGE, null, cv);
 
 		db.close();
@@ -165,8 +168,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				message.setReciever_type(cursor.getString(11));
 				message.setReview_status(cursor.getString(12));
 				message.setMessage_review_id(cursor.getString(13));
+				message.setDob(cursor.getString(14));
 				myFavourites.add(i,message);
-
 				cursor.moveToNext();
 			}
 			db.close();
@@ -200,6 +203,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			message.setReciever_type(cursor.getString(11));
 			message.setReview_status(cursor.getString(12));
 			message.setMessage_review_id(cursor.getString(13));
+			message.setDob(cursor.getString(14));
 
             ChatList.add(i,message);
             cursor.moveToNext();
@@ -208,10 +212,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.e("ChatListLength ",""+ChatList.size());
         return ChatList;
 	}
+	public ArrayList<Message> GetChatListforAdvisor(int id)
+	{
+		ArrayList<Message> ChatList = new ArrayList<Message>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		String WhereCluase = KEY_ID  + " in(select max("+KEY_ID+") from "+TABLE_MESSAGE+" WHERE ("+KEY_SENDER_ID+"="+id+" OR "+KEY_RECIEVER_ID+"="+id+") AND sender_type = 'client'"  + " group by "+KEY_RID +")";
+		Log.e("query",WhereCluase);
+		Cursor cursor = db.query(TABLE_MESSAGE, null, WhereCluase, null, null, null,KEY_DATE+" DESC");
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+		}
+		for (int i = 0; i < cursor.getCount(); i++) {
+			Message message = new Message();
+			message.setId(cursor.getInt(0));
+			message.setSender_id(cursor.getString(1));
+			message.setSender_display_name(cursor.getString(2));
+			message.setReciever_id(cursor.getString(3));
+			message.setReciever_display_name(cursor.getString(4));
+			message.setText(cursor.getString(5));
+			message.setDate(cursor.getString(6));
+			message.setStatus(Integer.parseInt(cursor.getString(7)));
+			message.setUrl(cursor.getString(8));
+			message.setType(cursor.getString(9));
+			message.setSender_type(cursor.getString(10));
+			message.setReciever_type(cursor.getString(11));
+			message.setReview_status(cursor.getString(12));
+			message.setMessage_review_id(cursor.getString(13));
+			message.setDob(cursor.getString(15));
+			Log.e("DOBDB",cursor.getString(15));
+			ChatList.add(i,message);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		Log.e("ChatListLength ",""+ChatList.size());
+		return ChatList;
+	}
 	public void FlushDatabase()
 	{
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("delete from "+ TABLE_MESSAGE);
+	}
+	public void UpdateReview(int id, String rating)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_REVIEW_STATUS,rating);
+		db.update(TABLE_MESSAGE, cv, "id="+id, null);
+
+
 	}
    /* public String isChatExist(String sender_id, String reciever_id)
     {

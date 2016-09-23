@@ -3,10 +3,12 @@ package avreye.mytarotadvisor.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,7 +40,11 @@ public class MessageCenterAdapter extends BaseAdapter {
     Context mContext;
     UserSession userSession;
     Retrofit retrofit;
+    private ArrayList<Message> mOriginalValues; // Original Values
+    private ArrayList<Message> mDisplayedValues;
     public MessageCenterAdapter(Context mContext, ArrayList<Message> userlist) {
+        this.mOriginalValues = userlist;
+        this.mDisplayedValues = userlist;
         this.mContext = mContext;
         this.UserList = userlist;
         userSession = new UserSession(mContext);
@@ -97,6 +103,8 @@ public class MessageCenterAdapter extends BaseAdapter {
         viewHolder.textView_videoorder.setText(UserList.get(position).getType());
         if(userSession.getUserType().contains("advisor"))
         {
+            viewHolder.textView_dob.setText(UserList.get(position).getDob());
+            Log.e("DOB",UserList.get(position).getDob());
             if(UserList.get(position).getSender_id().contains(userSession.getUserId()))
             {
                 viewHolder.textView_complete.setText("COMPLETE");
@@ -310,4 +318,56 @@ public class MessageCenterAdapter extends BaseAdapter {
         System.out.println(epoch); // 1055545912454
         return epoch;
     }
+    ///////////////////////////
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,FilterResults results) {
+
+                mDisplayedValues = (ArrayList<Message>) results.values; // has the filtered values
+                SetUserList(mDisplayedValues);  // notifies the data with new filtered values
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();        // Holds the results of a filtering operation in values
+                ArrayList<Message> FilteredArrList = new ArrayList<Message>();
+
+                if (mOriginalValues == null || mOriginalValues.size() == 0) {
+                    mOriginalValues = UserList; // saves the original data in mOriginalValues
+                }
+
+                /********
+                 *
+                 *  If constraint(CharSequence that is received) is null returns the mOriginalValues(Original) values
+                 *  else does the Filtering and returns FilteredArrList(Filtered)
+                 *
+                 ********/
+                if (constraint == null || constraint.length() == 0) {
+
+                    // set the Original result to return
+                    results.count = mOriginalValues.size();
+                    results.values = mOriginalValues;
+                } else {
+                    constraint = constraint.toString().toLowerCase();
+                    for (int i = 0; i < mOriginalValues.size(); i++) {
+                        String data = mOriginalValues.get(i).getText();
+                        if (data.toLowerCase().contains(constraint.toString()) || mOriginalValues.get(i).getSender_display_name().contains(constraint.toString())) {
+
+                            FilteredArrList.add(mOriginalValues.get(i));
+                        }
+                    }
+                    // set the Filtered result to return
+                    results.count = FilteredArrList.size();
+                    results.values = FilteredArrList;
+                }
+
+                return results;
+            }
+        };
+        return filter;
+    }
+    ////////////////////////////
 }

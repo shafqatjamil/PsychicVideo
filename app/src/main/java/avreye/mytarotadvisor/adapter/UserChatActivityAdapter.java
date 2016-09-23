@@ -41,6 +41,7 @@ import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.helper.APIService;
+import avreye.mytarotadvisor.helper.DatabaseHelper;
 import avreye.mytarotadvisor.helper.ImageLoadinginList;
 import avreye.mytarotadvisor.helper.UserSession;
 import avreye.mytarotadvisor.ui.MainActivity;
@@ -153,7 +154,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-                        PostReview(Advisor_id, Client_id, ratingBar.getRating() + "", editText.getText().toString(), UserList.get(position).getMessage_review_id());
+                        PostReview(UserList.get(position).getId(),Advisor_id, Client_id, ratingBar.getRating() + "", editText.getText().toString(), UserList.get(position).getMessage_review_id());
                         dialog.dismiss();
 
                         viewHolder.chat_review_rating.setVisibility(View.VISIBLE);
@@ -170,6 +171,8 @@ public class UserChatActivityAdapter extends BaseAdapter {
         if (position % 2 == 0) {
 
             try {
+
+                viewHolder.message_text_time.setVisibility(View.VISIBLE);
                 long et = toEpoch(UserList.get(position).getDate().substring(0, UserList.get(position).getDate().length() - 5));
 
                 SimpleDateFormat mFormatter = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
@@ -181,6 +184,10 @@ public class UserChatActivityAdapter extends BaseAdapter {
             }
 
 
+        }
+        else
+        {
+            viewHolder.message_text_time.setVisibility(View.GONE);
         }
         if (UserList.get(position).getSender_id().contains(new UserSession(mContext).getUserId())) {
             //my message
@@ -476,7 +483,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
         return epoch;
     }
 
-    void PostReview(String advisor_id, String client_id, String review, String comment, String message_review_id) {
+    void PostReview(final int rid, String advisor_id, String client_id, final String review, String comment, String message_review_id) {
         APIService apiservice = retrofit.create(APIService.class);
         Call<GetMyCreditsResponse> APICall = apiservice.postReview(advisor_id, client_id, review, comment, message_review_id);
         APICall.enqueue(new retrofit2.Callback<GetMyCreditsResponse>() {
@@ -485,6 +492,8 @@ public class UserChatActivityAdapter extends BaseAdapter {
                 if (response.body() != null) {
                     if (response.body().getResult() == 1) {
                         Log.e("PostReview", "Successfull");
+                        DatabaseHelper databaseHelper = new DatabaseHelper(mContext);
+                        databaseHelper.UpdateReview(rid,review);
 
                     } else {
                         Log.e("PostReview", "error");

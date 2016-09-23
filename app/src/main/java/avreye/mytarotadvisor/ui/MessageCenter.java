@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -29,6 +32,8 @@ public class MessageCenter extends Fragment {
     ListView messageList;
     private View rootView;
     DatabaseHelper databaseHelper;
+    UserSession userSession;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_message_center, null, false);
 
@@ -39,15 +44,18 @@ public class MessageCenter extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        SearchView searchView = (SearchView) rootView.findViewById(R.id.message_center_searchview);
+        userSession = new UserSession(getActivity());
+        EditText searchView = (EditText) rootView.findViewById(R.id.message_center_searchview);
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        TextView textView = (TextView) searchView.findViewById(id);
-        textView.setTextColor(Color.BLUE);
+       /// TextView textView = (TextView) searchView.findViewById(id);
+      //  textView.setTextColor(Color.BLUE);
+
+
+
+
 
 
         messageList = (ListView) rootView.findViewById(R.id.message_center_list);
-
 
 
         databaseHelper = new DatabaseHelper(getActivity());
@@ -55,17 +63,40 @@ public class MessageCenter extends Fragment {
         assert messageList != null;
         messageList.setAdapter(messageCenterAdapter);
 
+        searchView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Call back the Adapter with current character to Filter
+                messageCenterAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        messageCenterAdapter.SetUserList(databaseHelper.GetChatList(Integer.parseInt(new UserSession(getActivity()).getUserId())));
+        if (userSession.getUserType().contains("client"))
+            messageCenterAdapter.SetUserList(databaseHelper.GetChatList(Integer.parseInt(userSession.getUserId())));
+        else
+            messageCenterAdapter.SetUserList(databaseHelper.GetChatListforAdvisor(Integer.parseInt(userSession.getUserId())));
     }
-    public void receiveMessageFromMainScreen()
-    {
-        messageCenterAdapter.SetUserList(databaseHelper.GetChatList(Integer.parseInt(new UserSession(getActivity()).getUserId())));
+
+    public void receiveMessageFromMainScreen() {
+        if (userSession.getUserType().contains("client"))
+            messageCenterAdapter.SetUserList(databaseHelper.GetChatList(Integer.parseInt(userSession.getUserId())));
+        else
+            messageCenterAdapter.SetUserList(databaseHelper.GetChatListforAdvisor(Integer.parseInt(userSession.getUserId())));
     }
 
 }

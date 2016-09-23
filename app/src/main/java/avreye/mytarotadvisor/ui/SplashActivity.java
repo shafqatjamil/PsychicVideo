@@ -144,7 +144,8 @@ public class SplashActivity extends AppCompatActivity {
                                     Hmessages.get(i).getReceiverType(),
                                     Hmessages.get(i).getReviewStatus(),
                                     Hmessages.get(i).getMessageReviewId(),
-                                    ""+( Integer.parseInt(Hmessages.get(i).getReceiverId()) + Integer.parseInt(Hmessages.get(i).getSenderId()))
+                                    ""+( Integer.parseInt(Hmessages.get(i).getReceiverId()) + Integer.parseInt(Hmessages.get(i).getSenderId())),
+                                    Hmessages.get(i).getClientDob()
                                     )));
 
 

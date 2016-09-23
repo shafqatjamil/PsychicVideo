@@ -6,11 +6,12 @@
     android:orientation="vertical"
     tools:context=".ui.MessageCenter">
 
-    <SearchView
+    <EditText
         android:id="@+id/message_center_searchview"
         android:layout_width="match_parent"
-        android:searchIcon="@drawable/zzz_account_search"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/colorPrimary"
+        android:drawableStart="@drawable/search"
+        android:layout_height="44dp"/>
     <ListView
         android:id="@+id/message_center_list"
         android:background="@color/white"

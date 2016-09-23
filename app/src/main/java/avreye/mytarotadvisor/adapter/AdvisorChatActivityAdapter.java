@@ -108,6 +108,8 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
         if (position % 2 == 0) {
 
             try {
+
+                viewHolder.message_text_time.setVisibility(View.VISIBLE);
                 long et = toEpoch(UserList.get(position).getDate().substring(0, UserList.get(position).getDate().length() - 5));
 
                 SimpleDateFormat mFormatter = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
@@ -119,6 +121,11 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
             }
 
 
+        }
+        else
+        {
+
+            viewHolder.message_text_time.setVisibility(View.GONE);
         }
         if (UserList.get(position).getSender_id().contains(new UserSession(mContext).getUserId())) {
             //my message
@@ -205,6 +212,7 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
                     viewHolder.textView_text.setGravity(Gravity.LEFT);
                     viewHolder.textView_text_outer.setVisibility(View.GONE);
                     viewHolder.video_thumbnail_framlayout.setVisibility(View.GONE);
+                    viewHolder.textView_text.setVisibility(View.VISIBLE);
                 } else {
                     viewHolder.video_thumbnail_framlayout.setVisibility(View.VISIBLE);
                     viewHolder.textView_text_outer.setText("Question: " + Html.fromHtml(unescapeJavaString(str)) + "\n" + "Situation: " + Html.fromHtml(unescapeJavaString(situation.replace("\\\\", "\\"))));

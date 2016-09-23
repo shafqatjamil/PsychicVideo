@@ -337,12 +337,13 @@ public class ChatActivityforUser extends AppCompatActivity {
         payload.setReviewStatus("0");
         payload.setVideoUrl(ChatActivityforUser.VideoName);
         payload.setReviewId(MessageReviewID);
+        payload.setDob(userSession.getUserDOB());
 
 
         final Message message = new Message(0,payload.getPnApns().getAps().getSenderId(),payload.getPnApns().getAps().getSenderDisplayname(),
                 payload.getReceiverId(),payload.getReceiverDisplayname(),payload.getMsgText(),payload.getMsgDate(),Integer.parseInt(payload.getStatus()),
                 payload.getVideoUrl(),payload.getMessageType(),payload.getSenderType(),payload.getReceiverType(),payload.getReviewStatus(),
-                MessageReviewID,""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())));
+                MessageReviewID,""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())),payload.getDob());
 
         messages.add(message);
         userChatActivityAdapter.SetMessagesArrayList(messages);
@@ -445,7 +446,7 @@ public class ChatActivityforUser extends AppCompatActivity {
             Message message1 = new Message(2,payload.getPnApns().getAps().getSenderId(),payload.getPnApns().getAps().getSenderDisplayname(),
                     payload.getReceiverId(),payload.getReceiverDisplayname(),payload.getMsgText(),payload.getMsgDate(),Integer.parseInt(payload.getStatus()),
                     payload.getVideoUrl(),payload.getMessageType(),payload.getSenderType(),payload.getReceiverType(),payload.getReviewStatus(),
-                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())) );
+                    "none".toString(),""+( Integer.parseInt(payload.getReceiverId()) + Integer.parseInt(payload.getSenderId())),payload.getDob() );
 
             Log.e("senderid",payload.getSenderId());
             if(payload.getSenderId().contains(AdvisorID))
