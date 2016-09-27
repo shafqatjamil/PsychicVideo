@@ -9,6 +9,8 @@ import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.Object.RegistrationResponse;
 import avreye.mytarotadvisor.Object.SignUpBonusResponse;
+import avreye.mytarotadvisor.Object.UpdateClientResponse;
+import avreye.mytarotadvisor.Object.UpdateMessageStatusReponse;
 import avreye.mytarotadvisor.Object.UpdateStatusResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -28,6 +30,16 @@ public interface APIService {
                                             @Field("total_credit") String totalcredit,
                                             @Field("total_orders") String totalorders,
                                             @Field("dob") String dob);
+
+    @FormUrlEncoded
+    @POST("updateClient")
+    Call<UpdateClientResponse> updateClient(@Field("id") String id,
+                                            @Field("username") String name,
+                                            @Field("password") String password,
+                                            @Field("cemail") String udid,
+                                            @Field("email") String email,
+                                            @Field("dob") String dob);
+
 
     @FormUrlEncoded
     @POST("login")
@@ -81,4 +93,7 @@ public interface APIService {
                                           @Field("message_review_id") String message_review_id);
 
 
+    @FormUrlEncoded
+    @POST("update_status")
+    Call<UpdateMessageStatusReponse> updateMessageStatus(@Field("message_review_id") String message_review_id, @Field("message_sender_id") String message_sender_id);
 }

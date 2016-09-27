@@ -353,7 +353,7 @@ public class ClientSendMessage extends AppCompatActivity {
         payload.setSenderDisplayname(userSession.getUserName());
         payload.setSenderId(userSession.getUserId());
         payload.setSenderType("client");
-        payload.setStatus("1");
+        payload.setStatus("0");
         payload.setReviewStatus("0");
         payload.setReviewId(MessageReviewID);
         payload.setReponseTime("0");

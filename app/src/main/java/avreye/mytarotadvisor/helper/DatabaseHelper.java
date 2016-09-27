@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import avreye.mytarotadvisor.Object.Message;
+import avreye.mytarotadvisor.Object.OrderHistoryItemObject;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -260,6 +261,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.update(TABLE_MESSAGE, cv, "id="+id, null);
 
 
+	}
+	public void UpdateMessageStatus(int id)
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_STATUS,"1");
+		db.update(TABLE_MESSAGE, cv, "id="+id, null);
+
+
+	}
+	public ArrayList<OrderHistoryItemObject> GetOrderHistory(String id)
+	{
+		ArrayList<OrderHistoryItemObject> ChatList = new ArrayList<OrderHistoryItemObject>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		String WhereCluase = "("+KEY_SENDER_ID+"="+id+" OR reciever_id = "+ id + ") AND type = 'video' ";
+		Log.e("query",WhereCluase);
+		Cursor cursor = db.query(TABLE_MESSAGE, null, WhereCluase, null, null, null,null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+		}
+		for (int i = 0; i < cursor.getCount(); i++) {
+			OrderHistoryItemObject orderHistoryItemObject = new OrderHistoryItemObject();
+//			message.setId(cursor.getInt(0));
+//			message.setSender_id(cursor.getString(1));
+//			message.setSender_display_name(cursor.getString(2));
+//			message.setReciever_id(cursor.getString(3));
+//			message.setReciever_display_name(cursor.getString(4));
+//			message.setText(cursor.getString(5));
+//			message.setDate(cursor.getString(6));
+//			message.setStatus(Integer.parseInt(cursor.getString(7)));
+//			message.setUrl(cursor.getString(8));
+//			message.setType(cursor.getString(9));
+//			message.setSender_type(cursor.getString(10));
+//			message.setReciever_type(cursor.getString(11));
+//			message.setReview_status(cursor.getString(12));
+//			message.setMessage_review_id(cursor.getString(13));
+//			message.setDob(cursor.getString(15));
+//			Log.e("DOBDB",cursor.getString(15));
+			Log.e("ChatListLength ",""+cursor.getString(6));
+			String[] strs = cursor.getString(6).split(" ");
+			orderHistoryItemObject.setOrderDate(strs[0]);
+			orderHistoryItemObject.setAdvisorName(cursor.getString(4));
+			orderHistoryItemObject.setDeliverd("Pending");
+			ChatList.add(i,orderHistoryItemObject);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		Log.e("ChatListLength ",""+ChatList.size());
+		return ChatList;
 	}
    /* public String isChatExist(String sender_id, String reciever_id)
     {

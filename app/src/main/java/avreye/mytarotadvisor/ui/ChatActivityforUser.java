@@ -333,7 +333,7 @@ public class ChatActivityforUser extends AppCompatActivity {
 
         payload.setSenderDisplayname(userSession.getUserName());
         payload.setSenderId(userSession.getUserId());
-        payload.setStatus("1");
+        payload.setStatus("0");
         payload.setReviewStatus("0");
         payload.setVideoUrl(ChatActivityforUser.VideoName);
         payload.setReviewId(MessageReviewID);

@@ -170,6 +170,7 @@ public class AdvisorAvailabilityActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<GetAdvisorStatusReponse> call, Throwable t) {
+                progressDialog.dismiss();
 
             }
 

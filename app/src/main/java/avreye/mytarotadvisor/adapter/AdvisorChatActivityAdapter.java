@@ -2,12 +2,14 @@ package avreye.mytarotadvisor.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.siyamed.shapeimageview.shader.BubbleShader;
 import com.squareup.picasso.Picasso;
@@ -38,13 +41,16 @@ import java.util.TimeZone;
 
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
+import avreye.mytarotadvisor.Object.UpdateMessageStatusReponse;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.helper.APIService;
+import avreye.mytarotadvisor.helper.DatabaseHelper;
 import avreye.mytarotadvisor.helper.ImageLoadinginList;
 import avreye.mytarotadvisor.helper.UserSession;
 import avreye.mytarotadvisor.ui.MainActivity;
 import avreye.mytarotadvisor.ui.VideoPlayerActivity;
+import avreye.mytarotadvisor.ui.credentail.ClientLoginActivity;
 import avreye.mytarotadvisor.utils.Constants;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -55,11 +61,19 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
     ImageLoadinginList imageLoadinginList;
     private ArrayList<Message> UserList;
     private Context mContext;
-
+    Retrofit retrofit;
+    DatabaseHelper databaseHelper;
+    String myId;
     public AdvisorChatActivityAdapter(Context mContext, ArrayList<Message> userlist, String Advisor_id, String Client_id) {
         this.mContext = mContext;
         this.UserList = userlist;
         imageLoadinginList = new ImageLoadinginList(mContext);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.MESSAGE_API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        databaseHelper = new DatabaseHelper(mContext);
+        myId = Advisor_id;
 
     }
 
@@ -87,10 +101,12 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
 
 
             viewHolder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.chatbubble, null);
+            convertView = mInflater.inflate(R.layout.chatbubbleadvisor, null);
             viewHolder.textView_text = (TextView) convertView.findViewById(R.id.message_text);
             viewHolder.textView_text_outer = (TextView) convertView.findViewById(R.id.message_text_outer);
             viewHolder.message_text_time = (TextView) convertView.findViewById(R.id.message_text_time);
+            viewHolder.textView_order_status = (TextView) convertView.findViewById(R.id.order_status);
+            viewHolder.textView_markascompleted = (TextView) convertView.findViewById(R.id.order_status_markascompleted);
             viewHolder.imageView_video = (com.github.siyamed.shapeimageview.mask.PorterShapeImageView) convertView.findViewById(R.id.video_thumbnail);
             viewHolder.parent_layout = (LinearLayout) convertView.findViewById(R.id.bubble_layout_parent);
             viewHolder.user_image_right = (ImageView) convertView.findViewById(R.id.user_image_right);
@@ -104,6 +120,81 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        viewHolder.textView_markascompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean flag = false;
+                for(int i = position+1; i < UserList.size();i++)
+                {
+                    if(UserList.get(i).getSender_id().contains(myId))
+                    {
+                        flag = true;
+                    }
+                }
+
+                if(flag)
+                {
+                    Log.e("Status" ,UserList.get(position).getMessage_review_id()+"");
+                    Log.e("Status" ,UserList.get(position).getSender_id()+"");
+                    new AlertDialog.Builder(mContext)
+                            .setCancelable(false)
+                            .setMessage("Are you sure to mark this order as completed.")
+                            .setTitle("Mark Order")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    ////////////////////////////
+
+                                    APIService apiservice = retrofit.create(APIService.class);
+                                    Call<UpdateMessageStatusReponse> APICall = apiservice.updateMessageStatus(UserList.get(position).getMessage_review_id(), UserList.get(position).getSender_id());
+                                    APICall.enqueue(new retrofit2.Callback<UpdateMessageStatusReponse>() {
+                                        @Override
+                                        public void onResponse(Call<UpdateMessageStatusReponse> call, Response<UpdateMessageStatusReponse> response) {
+                                            if (response.body() != null) {
+
+                                                if (response.body().getResult() == 1) {
+                                                    Log.e("Status" ,"Changed");
+                                                    databaseHelper.UpdateMessageStatus(UserList.get(position).getId());
+                                                    viewHolder.textView_markascompleted.setVisibility(View.GONE);
+                                                    viewHolder.textView_order_status.setVisibility(View.GONE);
+                                                    viewHolder.textView_text.setBackgroundResource(R.drawable.bubble_out);
+                                                    UserList.get(position).setStatus(1);
+
+                                                } else {
+                                                    Log.e("message history" ,"error not 1");
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<UpdateMessageStatusReponse> call, Throwable t) {
+                                            Log.e("message history" ,"errorfailure");
+                                            Log.e("message history" ,t.getMessage());
+                                        }
+                                    });
+                                    /////////////////////////////
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+                else
+                {
+                    Toast.makeText(mContext,"Please complete order first",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
 
         if (position % 2 == 0) {
 
@@ -130,6 +221,8 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
         if (UserList.get(position).getSender_id().contains(new UserSession(mContext).getUserId())) {
             //my message
 
+            viewHolder.textView_markascompleted.setVisibility(View.GONE);
+            viewHolder.textView_order_status.setVisibility(View.GONE);
 
             if (UserList.get(position).getType().toString().contains("video")) {
 
@@ -193,13 +286,18 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
             //others message
 
             viewHolder.parent_layout.setGravity(Gravity.LEFT);
-
             viewHolder.user_image_left.setVisibility(View.VISIBLE);
             viewHolder.user_image_right.setVisibility(View.GONE);
 
 
+
+
             if (UserList.get(position).getText().toString().contains("/~*/")) {
 
+
+
+
+                viewHolder.textView_order_status.setText("Pending: Requires Video Reply");
                 int index = UserList.get(position).getText().toString().indexOf("/~*/");
                 String question = UserList.get(position).getText().toString().substring(0, index);
                 String situation = UserList.get(position).getText().toString().substring(index + 4);
@@ -253,7 +351,10 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
                 //////
 
 
+
             } else {
+
+                viewHolder.textView_order_status.setText("Pending: Requires Text Reply");
                 viewHolder.textView_text.setText(Html.fromHtml(unescapeJavaString(UserList.get(position).getText())));
                 viewHolder.video_thumbnail_framlayout.setVisibility(View.GONE);
                 viewHolder.textView_text_outer.setVisibility(View.GONE);
@@ -263,6 +364,18 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
 
 
             }
+            if(UserList.get(position).getStatus() == 0)
+            {
+                viewHolder.textView_markascompleted.setVisibility(View.VISIBLE);
+                viewHolder.textView_order_status.setVisibility(View.VISIBLE);
+                viewHolder.textView_text.setBackgroundResource(R.drawable.bubble_out_red);
+            }
+            else
+            {
+                viewHolder.textView_markascompleted.setVisibility(View.GONE);
+                viewHolder.textView_order_status.setVisibility(View.GONE);
+                viewHolder.textView_text.setBackgroundResource(R.drawable.bubble_out);
+            }
         }
         return convertView;
     }
@@ -270,12 +383,15 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
     class ViewHolder {
         TextView textView_text;
         TextView textView_text_outer;
+        TextView textView_order_status;
+        TextView textView_markascompleted;
         TextView message_text_time;
         com.github.siyamed.shapeimageview.mask.PorterShapeImageView imageView_video;
         LinearLayout parent_layout;
         ImageView user_image_right, user_image_left;
         FrameLayout video_thumbnail_framlayout;
         ImageButton video_thumbnail_play_button;
+
     }
 
     public void SetMessagesArrayList(ArrayList<Message> userList) {
@@ -362,4 +478,6 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
         System.out.println(epoch); // 1055545912454
         return epoch;
     }
+
+
 }

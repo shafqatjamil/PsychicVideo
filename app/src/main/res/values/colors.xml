@@ -27,4 +27,5 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="lightblack">#2b2b2b</color>
+    <color name="bb_inActiveBottomBarItemColor">#807c7c</color>
 </resources>

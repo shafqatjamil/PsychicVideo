@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import avreye.mytarotadvisor.ui.MainActivity;
+import avreye.mytarotadvisor.ui.MessageCenter;
 
 /**
  * Created by Zeeshan on 16/06/2016.
@@ -20,7 +21,7 @@ import avreye.mytarotadvisor.ui.MainActivity;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "StartingAndroid";
-
+    AppController appController;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -29,12 +30,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      //   Log.e(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
         Log.e(TAG, "Notification Message Body: " + remoteMessage.getData().toString());
 
+        appController = (AppController) getApplicationContext();
         //Calling method to generate notification
-        sendNotification(remoteMessage.getData().get("title_for_mobile"),remoteMessage.getData().get("summary_for_mobile"));
+        sendNotification(remoteMessage.getData().get("sender_displayname"),remoteMessage.getData().get("alert"));
     }
 
     //This method is only generating push notification
     private void sendNotification(String title, String messageBody) {
+
+        if(appController.GetActivity() != null)
+        {
+
+           return;
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,

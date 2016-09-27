@@ -128,11 +128,6 @@ public class RegisterationActivity extends AppCompatActivity {
 
     void HitAPI() {
 
-
-
-
-
-
         APIService apiservice = retrofit.create(APIService.class);
         Call<RegistrationResponse> APICall = apiservice.RegisterUser(editText_name.getText().toString()
                                                         ,editText_password.getText().toString()

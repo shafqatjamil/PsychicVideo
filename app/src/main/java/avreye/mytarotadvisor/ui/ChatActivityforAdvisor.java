@@ -165,7 +165,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         messages = databaseHelper.getAllMessages(AdvisorID);
 
-        advisorChatActivityAdapter = new AdvisorChatActivityAdapter(this,messages,AdvisorID,userSession.getUserId());
+        advisorChatActivityAdapter = new AdvisorChatActivityAdapter(this,messages,userSession.getUserId(),userSession.getUserId());
         assert messageList != null;
         messageList.setAdapter(advisorChatActivityAdapter);
         messageList.setSelection(advisorChatActivityAdapter.getCount() - 1);
@@ -244,7 +244,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
         pnApns.setAps(aps);
         payload.setPnApns(pnApns);
 
-        data.setAlert("You have got a new order.");
+        data.setAlert("Order Completed");
         data.setAppType("advisor");
         data.setBadge(1);
         data.setSenderId(userSession.getUserId());
@@ -269,7 +269,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
 
         payload.setSenderDisplayname(userSession.getUserName());
         payload.setSenderId(userSession.getUserId());
-        payload.setStatus("1");
+        payload.setStatus("0");
         payload.setReviewStatus("0");
         payload.setVideoUrl(ChatActivityforAdvisor.VideoName);
         payload.setReviewId(MessageReviewID);
@@ -447,7 +447,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
                 Log.e("video path", getPath(ChatActivityforAdvisor.this, videoUri));
                 file = new File(getPath(ChatActivityforAdvisor.this, videoUri));
                 Log.e("Client Send Message", "send activty result called");
-                ChatActivityforUser.MessageType = "video";
+                ChatActivityforAdvisor.MessageType = "video";
             }
 
 
@@ -460,7 +460,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
                     Log.e("video path", getPath(ChatActivityforAdvisor.this, videoUri));
                     file = new File(getPath(ChatActivityforAdvisor.this, videoUri));
                     Log.e("Client Send Message", "send activty result called");
-                    ChatActivityforUser.MessageType = "video";
+                    ChatActivityforAdvisor.MessageType = "video";
 
 
                     progressDialog.show();
@@ -599,7 +599,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
             File fileToUpload = file;
             String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             mydate = mydate.replaceAll("\\s", "");
-            ChatActivityforUser.VideoName = Constants.BUCKET_URL + "sjk" + mydate + ".mp4";
+            ChatActivityforAdvisor.VideoName = Constants.BUCKET_URL + "sjk" + mydate + ".mp4";
             TransferObserver observer = transferUtility.upload(Constants.BUCKET_NAME, "sjk" + mydate + ".mp4",
                     fileToUpload, CannedAccessControlList.PublicRead);
             observer.setTransferListener(new TransferListener() {

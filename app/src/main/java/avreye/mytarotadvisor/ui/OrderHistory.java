@@ -10,20 +10,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.appboy.Appboy;
+import java.util.ArrayList;
+import java.util.List;
 
+import avreye.mytarotadvisor.Object.Message;
+import avreye.mytarotadvisor.Object.OrderHistoryItemObject;
 import avreye.mytarotadvisor.R;
+import avreye.mytarotadvisor.adapter.MessageCenterAdapter;
+import avreye.mytarotadvisor.adapter.OrderHistoryAdapter;
+import avreye.mytarotadvisor.helper.DatabaseHelper;
+import avreye.mytarotadvisor.helper.UserSession;
 
-public class FaqTosPp extends AppCompatActivity {
-
-
+public class OrderHistory extends AppCompatActivity {
     TextView textView_title;
     private TextView headerTitle;
     private TextView MyCredits;
@@ -31,12 +35,19 @@ public class FaqTosPp extends AppCompatActivity {
     ImageButton imageButton_back;
     Activity activity;
     private ProgressDialog progDailog;
-    WebView webView_faq;
+    UserSession userSession;
+    ArrayList<OrderHistoryItemObject> MessageList;
+
+    OrderHistoryAdapter orderHistoryAdapter;
+    ListView listView_orders;
+    DatabaseHelper databaseHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faq_tos_pp);
+        setContentView(R.layout.activity_order_history);
+        userSession = new UserSession(this);
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -58,53 +69,36 @@ public class FaqTosPp extends AppCompatActivity {
         MyCredits.setVisibility(View.INVISIBLE);
         imageView.setVisibility(View.INVISIBLE);
         textView_credits.setVisibility(View.INVISIBLE);
-        webView_faq = (WebView) findViewById(R.id.faq_webview);
         imageButton_back.setVisibility(View.VISIBLE);
-        headerTitle.setText(getIntent().getStringExtra("screenname"));
+        headerTitle.setText("OrderHistory");
 
 
         activity = this;
 
-        progDailog = ProgressDialog.show(activity, "Loading", "Please wait...", true);
-        progDailog.setCancelable(false);
-
-
-        webView_faq.getSettings().setJavaScriptEnabled(true);
-        webView_faq.getSettings().setLoadWithOverviewMode(true);
-        webView_faq.getSettings().setUseWideViewPort(true);
-        webView_faq.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webView_faq.getSettings().setBuiltInZoomControls(true);
-        webView_faq.getSettings().setSupportZoom(true);
-
-        webView_faq.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                progDailog.show();
-                view.loadUrl(url);
-
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, final String url) {
-                progDailog.dismiss();
-            }
-        });
-
-        webView_faq.loadUrl(getIntent().getStringExtra("url"));
-        //webView.loadUrl("file:///android_asset/index.html");
-
+       // progDailog = ProgressDialog.show(activity, "Loading", "Please wait...", true);
+        //progDailog.setCancelable(false);
 
         imageButton_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FaqTosPp.this, MainActivity.class);
+                Intent intent = new Intent(OrderHistory.this, MainActivity.class);
                 startActivity(intent);
-                FaqTosPp.this.finish();
+                OrderHistory.this.finish();
             }
         });
 
-    }
+        listView_orders = (ListView) findViewById(R.id.orderhistory_listview);databaseHelper = new DatabaseHelper(this);
+        orderHistoryAdapter = new OrderHistoryAdapter(this, new ArrayList<OrderHistoryItemObject>());
+        assert listView_orders != null;
+        listView_orders.setAdapter(orderHistoryAdapter);
 
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MessageList = databaseHelper.GetOrderHistory(userSession.getUserId());
+            orderHistoryAdapter.SetUserList(MessageList);
+    }
 }

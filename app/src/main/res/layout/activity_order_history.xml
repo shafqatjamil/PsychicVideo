@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_faq_tos_pp"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context="avreye.mytarotadvisor.ui.FaqTosPp">
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        android:layout_height="56dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="?actionBarSize"
+        android:weightSum="3"
+        android:id="@+id/orderhistory_linearlayout">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Order Date"
+            android:textColor="@color/colorPrimary"
+            fontPath="MyriadPro-Cond.otf"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Advisor"
+            fontPath="MyriadPro-Cond.otf"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Deliverd"
+            fontPath="MyriadPro-Cond.otf"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderhistory_linearlayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/orderhistory_line">
+
+    </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderhistory_line"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/orderhistory_listview" />
+</android.support.constraint.ConstraintLayout>

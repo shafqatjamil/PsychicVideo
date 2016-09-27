@@ -4,10 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.constraint.ConstraintLayout;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,26 +21,21 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.github.siyamed.shapeimageview.shader.BubbleShader;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
-import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.helper.APIService;
 import avreye.mytarotadvisor.helper.DatabaseHelper;
 import avreye.mytarotadvisor.helper.ImageLoadinginList;
 import avreye.mytarotadvisor.helper.UserSession;
-import avreye.mytarotadvisor.ui.MainActivity;
 import avreye.mytarotadvisor.ui.VideoPlayerActivity;
 import avreye.mytarotadvisor.utils.Constants;
 import retrofit2.Call;
@@ -99,7 +90,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
 
 
             viewHolder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.chatbubble, null);
+            convertView = mInflater.inflate(R.layout.chatbubbleuser, null);
             viewHolder.textView_text = (TextView) convertView.findViewById(R.id.message_text);
             viewHolder.textView_text_outer = (TextView) convertView.findViewById(R.id.message_text_outer);
             viewHolder.message_text_time = (TextView) convertView.findViewById(R.id.message_text_time);

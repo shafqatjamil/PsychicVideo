@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    android:weightSum="3"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/orderhistory_linearlayout">
+    <TextView
+        android:id="@+id/item_orderhistory_date"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="Order Date"
+        android:textColor="@color/black"
+        fontPath="MyriadPro-Cond.otf"
+        android:gravity="center"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/item_orderhistory_advisor"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="Advisor"
+        fontPath="MyriadPro-Cond.otf"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/item_orderhistory_deliverd"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="Deliverd"
+        fontPath="MyriadPro-Cond.otf"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_height="match_parent" />
+</LinearLayout>

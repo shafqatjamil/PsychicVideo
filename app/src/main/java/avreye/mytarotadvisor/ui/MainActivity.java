@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         mUserSession = new UserSession(this);
         flag = false;
+        Log.e("MainActivity", "Registering for PushNotifications");
         sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken());
 
         Window window = this.getWindow();
@@ -200,96 +201,88 @@ public class MainActivity extends AppCompatActivity
 
         }
         ////////////bottom bar//////////////////
-        if (mUserSession.getUserType().equals("client")) {
-            mBottomBar = BottomBar.attach(this, savedInstanceState);
-            mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, new OnMenuTabClickListener() {
-                @Override
-                public void onMenuTabSelected(@IdRes int menuItemId) {
-//                    if(flag)
-//                    {
-//                        flag = false;
-//                        return;
+//        if (mUserSession.getUserType().equals("client")) {
+//            mBottomBar = BottomBar.attach(this, savedInstanceState);
+//            mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, new OnMenuTabClickListener() {
+//                @Override
+//                public void onMenuTabSelected(@IdRes int menuItemId) {
+//                    if (menuItemId == R.id.bottomBarItemOne) {
+//                        getSupportActionBar().show();
+//
+//
+//                        String sourceString = "<i>OUR</i>" + "<b>" + "ADVISORS" + "</b> ";
+//                        headerTitle.setGravity(Gravity.CENTER);
+//                        headerTitle.setText(Html.fromHtml(sourceString));
+//
+//                        Fragment newFragment = new AdvisorListFragment();
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+//                        transaction.replace(R.id.container, newFragment);
+//                        transaction.commit();
+//
+//                        mMessageCenter = null;
+//                        // The user selected item number one.
+//                    } else if (menuItemId == R.id.bottomBarItemTwo) {
+//                        // The user selected item number one.
+//                        String sourceString =  "<b>" + "MESSAGE" + "</b> " + "<i>CENTER </i>" ;
+//                        headerTitle.setGravity(Gravity.CENTER);
+//                        headerTitle.setText(Html.fromHtml(sourceString));
+//
+//                        getSupportActionBar().show();
+//                        Fragment messageFragment = new MessageCenter();
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+//                        transaction.replace(R.id.container, messageFragment);
+//                        transaction.commit();
+//                        mMessageCenter = (MessageCenter) messageFragment;
+//                    }else if (menuItemId == R.id.bottomBarItemThree) {
+//                        // The user selected item number one.
+//                        String sourceString =  "NEWSFEED" ;
+//                        headerTitle.setGravity(Gravity.CENTER);
+//                        headerTitle.setText(Html.fromHtml(sourceString));
+//                        getSupportActionBar().show();
+//                        AppboyFeedFragment messageFragment = new AppboyFeedFragment();
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+//                        transaction.replace(R.id.container, messageFragment);
+//                        transaction.commit();
+//                       // mMessageCenter = (MessageCenter) messageFragment;
+//                    } else if (menuItemId == R.id.bottomBarItemFour) {
+//
+//                        getSupportActionBar().hide();
+//                        mMessageCenter = null;
+//                        Fragment userListFragment = new DailyTarotAdvisorFragment();
+//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+//                        transaction.replace(R.id.container, userListFragment);
+//                        transaction.commit();
+//
+//
 //                    }
-                    if (menuItemId == R.id.bottomBarItemOne) {
-                        getSupportActionBar().show();
-
-
-                        String sourceString = "<i>OUR</i>" + "<b>" + "ADVISORS" + "</b> ";
-                        headerTitle.setGravity(Gravity.CENTER);
-                        headerTitle.setText(Html.fromHtml(sourceString));
-
-                        Fragment newFragment = new AdvisorListFragment();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
-                        transaction.replace(R.id.container, newFragment);
-                        transaction.commit();
-
-                        mMessageCenter = null;
-                        // The user selected item number one.
-                    } else if (menuItemId == R.id.bottomBarItemTwo) {
-                        // The user selected item number one.
-                        String sourceString =  "<b>" + "MESSAGE" + "</b> " + "<i>CENTER </i>" ;
-                        headerTitle.setGravity(Gravity.CENTER);
-                        headerTitle.setText(Html.fromHtml(sourceString));
-
-                        getSupportActionBar().show();
-                        Fragment messageFragment = new MessageCenter();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
-                        transaction.replace(R.id.container, messageFragment);
-                        transaction.commit();
-                        mMessageCenter = (MessageCenter) messageFragment;
-                    }else if (menuItemId == R.id.bottomBarItemThree) {
-                        // The user selected item number one.
-                        String sourceString =  "NEWSFEED" ;
-                        headerTitle.setGravity(Gravity.CENTER);
-                        headerTitle.setText(Html.fromHtml(sourceString));
-                        getSupportActionBar().show();
-                        AppboyFeedFragment messageFragment = new AppboyFeedFragment();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
-                        transaction.replace(R.id.container, messageFragment);
-                        transaction.commit();
-                       // mMessageCenter = (MessageCenter) messageFragment;
-                    } else if (menuItemId == R.id.bottomBarItemFour) {
-
-                        getSupportActionBar().hide();
-                        mMessageCenter = null;
-                        Fragment userListFragment = new DailyTarotAdvisorFragment();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
-                        transaction.replace(R.id.container, userListFragment);
-                        transaction.commit();
-
-
-                    }
-                }
-
-                @Override
-                public void onMenuTabReSelected(@IdRes int menuItemId) {
-                    if (menuItemId == R.id.bottomBarItemOne) {
-                        // The user reselected item number one, scroll your content to top.
-                    }
-                    if (menuItemId == R.id.bottomBarItemTwo) {
-                        // The user reselected item number one, scroll your content to top.
-                    }
-                }
-
-            });
-
-            // Setting colors for different tabs when there's more than three of them.
-            // You can set colors for tabs in three different ways as shown below.
-            //  mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
-
-            mBottomBar.mapColorForTab(0, "#612fd4");
-            mBottomBar.mapColorForTab(1, "#612fd4");
-            mBottomBar.mapColorForTab(2, "#612fd4");
-            mBottomBar.mapColorForTab(3, "#612fd4");
-            // mBottomBar.mapColorForTab(4, "#FF9800");
-        } else {
-            // mBottomBar = BottomBar.attach(this, savedInstanceState);
-            //  mBottomBar.setVisibility(View.INVISIBLE);
-        }
+//                }
+//
+//                @Override
+//                public void onMenuTabReSelected(@IdRes int menuItemId) {
+//                    if (menuItemId == R.id.bottomBarItemOne) {
+//                        // The user reselected item number one, scroll your content to top.
+//                    }
+//                    if (menuItemId == R.id.bottomBarItemTwo) {
+//                        // The user reselected item number one, scroll your content to top.
+//                    }
+//                }
+//
+//            });
+//
+//            // Setting colors for different tabs when there's more than three of them.
+//            // You can set colors for tabs in three different ways as shown below.
+//            //  mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
+//
+//            mBottomBar.mapColorForTab(0, "#612fd4");
+//            mBottomBar.mapColorForTab(1, "#612fd4");
+//            mBottomBar.mapColorForTab(2, "#612fd4");
+//            mBottomBar.mapColorForTab(3, "#612fd4");
+//            // mBottomBar.mapColorForTab(4, "#FF9800");
+//        }
         //////////////////////////////////////////////////////////////////////////////////////
     }
     @Override
@@ -330,7 +323,6 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("screenname","Faq");
             intent.putExtra("url","https://storage.googleapis.com/www.psychictxt.com/FAQ.htm");
             startActivity(intent);
-            mMessageCenter = null;
         } else if (id == R.id.nav_tutorial) {
             mMessageCenter = null;
             Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
@@ -341,11 +333,9 @@ public class MainActivity extends AppCompatActivity
             intent.putExtra("message", "no message");
             startActivity(intent);
         } else if (id == R.id.nav_order_history) {
-            Fragment messageFragment = new MessageCenter();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, messageFragment);
-            transaction.commit();
-            mMessageCenter = (MessageCenter) messageFragment;
+            mMessageCenter = null;
+            Intent intent = new Intent(MainActivity.this, OrderHistory.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_suppport) {
 
@@ -391,6 +381,11 @@ public class MainActivity extends AppCompatActivity
         }else if (id == R.id.nav_availability) {
 
             Intent intent = new Intent(MainActivity.this, AdvisorAvailabilityActivity.class);
+            startActivity(intent);
+
+        }else if (id == R.id.nav_settings) {
+
+            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
 
         }else if (id == R.id.nav_ratting) {
@@ -533,4 +528,5 @@ public class MainActivity extends AppCompatActivity
         super.onStop();
         Appboy.getInstance(MainActivity.this).closeSession(MainActivity.this);
     }
+
 }

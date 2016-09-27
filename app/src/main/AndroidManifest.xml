@@ -145,7 +145,7 @@
         <activity
             android:name=".ui.FaqTosPp"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/MainScreenTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.SupportActivity"
@@ -170,10 +170,21 @@
         <activity
             android:name=".ui.AdvisorRating"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".ui.ChatActivityforAdvisor"
+        <activity
+            android:name=".ui.ChatActivityforAdvisor"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainScreenTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.OrderHistory"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainScreenTheme"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>
