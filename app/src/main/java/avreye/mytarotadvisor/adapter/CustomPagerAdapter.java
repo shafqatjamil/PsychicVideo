@@ -1,6 +1,7 @@
 package avreye.mytarotadvisor.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import avreye.mytarotadvisor.R;
+import avreye.mytarotadvisor.ui.MainActivity;
+import avreye.mytarotadvisor.ui.SupportActivity;
 
 public class CustomPagerAdapter extends PagerAdapter {
 
@@ -26,6 +29,9 @@ public class CustomPagerAdapter extends PagerAdapter {
         ImageView imageView = (ImageView) item_view.findViewById(R.id.swipe_layout_image);
 
         imageView.setImageResource(image_resources[position]);
+
+
+
         collection.addView(item_view);
         return item_view;
     }

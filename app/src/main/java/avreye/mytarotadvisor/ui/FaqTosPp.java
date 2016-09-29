@@ -3,10 +3,12 @@ package avreye.mytarotadvisor.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -51,6 +53,29 @@ public class FaqTosPp extends AppCompatActivity {
         headerTitle = (TextView) toolbar.findViewById(R.id.title_text);
         MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
         imageButton_back = (ImageButton) toolbar.findViewById(R.id.tool_bar_backButton);
+        imageButton_back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageView view = (ImageView) v;
+                        view.getDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageView view = (ImageView) v;
+                        //clear the overlay
+                        view.getDrawable().clearColorFilter();
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
         TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
 

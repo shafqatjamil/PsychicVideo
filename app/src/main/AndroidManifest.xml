@@ -67,9 +67,14 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/MainScreenTheme" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.ChatActivityforUser"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ClientSendMessage"
             android:configChanges="orientation|screenSize"
@@ -107,11 +112,6 @@
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
 
-        <activity
-            android:name=".ui.ChatActivityforUser"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -140,7 +140,7 @@
         <activity
             android:name=".ui.CreditsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/MainScreenTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.FaqTosPp"
@@ -150,7 +150,7 @@
         <activity
             android:name=".ui.SupportActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/MainScreenTheme"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.TutorialActivity"
@@ -185,6 +185,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainScreenTheme"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.PromoCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainScreenTheme"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

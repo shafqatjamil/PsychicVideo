@@ -104,7 +104,7 @@ public class AdvisorAvailabilityActivity extends AppCompatActivity {
         if (new UserSession(context).getADVISOR_STATUS() == "1") {
 
             textView_status.setText("ACTIVE");
-            textView_status.setTextColor(Color.parseColor("#FF00EEFF"));
+            textView_status.setTextColor(Color.parseColor("#e9a02c"));
             aSwitch.setChecked(true);
         } else {
 
@@ -117,7 +117,7 @@ public class AdvisorAvailabilityActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     textView_status.setText("ACTIVE");
-                    textView_status.setTextColor(Color.parseColor("#FF00EEFF"));
+                    textView_status.setTextColor(Color.parseColor("#e9a02c"));
                     new UserSession(context).setADVISOR_STATUS("1");
                     HitAPI("1");
                 } else {
@@ -151,7 +151,7 @@ public class AdvisorAvailabilityActivity extends AppCompatActivity {
                     if (response.body().getMessage().contains("1")) {
 
                         textView_status.setText("ACTIVE");
-                        textView_status.setTextColor(Color.parseColor("#FF00EEFF"));
+                        textView_status.setTextColor(Color.parseColor("#e9a02c"));
                         aSwitch.setChecked(true);
                     } else {
                         textView_status.setTextColor(Color.parseColor("#FFABA7A7"));
@@ -202,7 +202,7 @@ public class AdvisorAvailabilityActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UpdateStatusResponse> call, Throwable t) {
-
+                progressDialog.dismiss();
             }
 
 

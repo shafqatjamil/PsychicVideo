@@ -7,6 +7,7 @@ import avreye.mytarotadvisor.Object.InAppPurchases;
 import avreye.mytarotadvisor.Object.LoginResponse;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
+import avreye.mytarotadvisor.Object.PromoCodeReponse;
 import avreye.mytarotadvisor.Object.RegistrationResponse;
 import avreye.mytarotadvisor.Object.SignUpBonusResponse;
 import avreye.mytarotadvisor.Object.UpdateClientResponse;
@@ -24,12 +25,15 @@ import retrofit2.http.POST;
 public interface APIService {
     @FormUrlEncoded
     @POST("createClient")
-    Call<RegistrationResponse> RegisterUser(@Field("username") String name, @Field("password")
-    String password, @Field("email") String email,
-                                            @Field("udid") String udid,
-                                            @Field("total_credit") String totalcredit,
-                                            @Field("total_orders") String totalorders,
-                                            @Field("dob") String dob);
+    Call<RegistrationResponse>
+    RegisterUser(@Field("username") String name,
+                 @Field("password") String password,
+                 @Field("email") String email,
+                 @Field("udid") String udid,
+                 @Field("total_credit") String totalcredit,
+                 @Field("total_orders") String totalorders,
+                 @Field("tarot_id") String tarot_id,
+                 @Field("dob") String dob);
 
     @FormUrlEncoded
     @POST("updateClient")
@@ -96,4 +100,12 @@ public interface APIService {
     @FormUrlEncoded
     @POST("update_status")
     Call<UpdateMessageStatusReponse> updateMessageStatus(@Field("message_review_id") String message_review_id, @Field("message_sender_id") String message_sender_id);
+
+    @GET("isCoupunAvailable")
+    Call<GetMyCreditsResponse> isCoupunAvailable();
+
+    @FormUrlEncoded
+    @POST("applyPromocode")
+    Call<PromoCodeReponse> applyPromocode(@Field("user_id") String user_id, @Field("promocode") String promocode);
+
 }

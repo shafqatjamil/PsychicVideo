@@ -1,6 +1,7 @@
 package avreye.mytarotadvisor.ui;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -78,13 +79,20 @@ public class DailyTarotAdvisorFragment extends Fragment {
             public void onClick(View v) {
                 if(VideoURL.isEmpty())
                     return;
-                button_playButton.setVisibility(View.GONE);
-                imageView_thumbnail.setVisibility(View.GONE);
-                Uri uri=Uri.parse(VideoURL);
 
-                VideoView video=(VideoView)rootView.findViewById(R.id.video_view);
-                video.setVideoURI(uri);
-                video.start();
+
+                Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                intent.putExtra("advisor_video",VideoURL);
+                startActivity(intent);
+
+//
+//                button_playButton.setVisibility(View.GONE);
+//                imageView_thumbnail.setVisibility(View.GONE);
+//                Uri uri=Uri.parse(VideoURL);
+//
+//                VideoView video=(VideoView)rootView.findViewById(R.id.video_view);
+//                video.setVideoURI(uri);
+//                video.start();
 
                 Appboy.getInstance(getActivity()).logCustomEvent("TarotOfDay_Viewed");
             }

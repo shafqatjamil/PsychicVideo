@@ -2,6 +2,7 @@ package avreye.mytarotadvisor.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -127,7 +128,11 @@ public class AdvisorDetailActivity extends AppCompatActivity {
 
         toolbar.findViewById(R.id.title_text).setVisibility(View.GONE);
         ((TextView) toolbar.findViewById(R.id.toolbar_credits)).setText(new UserSession(this).getUserCredits());
-
+        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        TextView textView_credits1 = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        textView_credits.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits1.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits.setTextSize(12f);
 
 
 

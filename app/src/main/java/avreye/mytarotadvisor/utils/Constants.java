@@ -14,6 +14,7 @@ public class Constants {
     public static String PURCHASE_CREDITS_URL = "http://mytarotadvisorapp.net/API/Purchase_Credits_API/";
     public static String MESSAGE_API_URL = "http://dev.mytarotadvisorapp.net/API/Message_API/";
     public static String REVIEW_API_URL = "http://dev.mytarotadvisorapp.net/API/Review_API/";
+    public static String Promocode_API_URL = "http://dev.mytarotadvisorapp.net/API/Promocode_API/";
 
 
 

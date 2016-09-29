@@ -76,13 +76,13 @@ public class AdvisorListAdapter extends BaseAdapter {
         }
             viewHolder.userName.setText(UserList.get(position).getUsername());
            // viewHolder.userName.setTypeface(AppController.getInstance().GetMyriad());
-            viewHolder.ratingBar.setRating(3.6f);//UserList.get(position).getRating());
+            viewHolder.ratingBar.setRating(UserList.get(position).getRating());//UserList.get(position).getRating());
 
         if (Integer.parseInt(UserList.get(position).getStatus()) == 1){
-            viewHolder.userStatusImg.setImageResource(R.drawable.blue);
+            viewHolder.userStatusImg.setImageResource(R.drawable.active);
             viewHolder.linearLayout_offlineoverlay.setVisibility(View.GONE);
         }else{
-            viewHolder.userStatusImg.setImageResource(R.drawable.orange);
+            viewHolder.userStatusImg.setImageResource(R.drawable.inactive);
             viewHolder.linearLayout_offlineoverlay.setVisibility(View.VISIBLE);
         }
 

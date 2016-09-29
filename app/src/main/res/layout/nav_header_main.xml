@@ -32,17 +32,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:gravity="center"
         android:textSize="20sp"
         android:id="@+id/nav_header_user_name"
         android:text="Android Studio"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/nav_header_user_email"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/nav_header_user_version"/>
 
 </LinearLayout>

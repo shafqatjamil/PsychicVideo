@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -34,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -168,14 +171,51 @@ public class ClientSendMessage extends AppCompatActivity {
                 .build();
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         textView = (TextView) toolbar.findViewById(R.id.title_text);
         String sourceString = "VIDEO ORDER";//getIntent().getStringExtra("advisor_name");
         textView.setText(Html.fromHtml(sourceString));
-
         ((TextView) toolbar.findViewById(R.id.toolbar_credits)).setText(new UserSession(this).getUserCredits());
+        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        TextView textView_credits1 = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        textView_credits.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits1.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits.setTextSize(12f);
+
+
+        ImageButton imageButton_back = (ImageButton) toolbar.findViewById(R.id.tool_bar_backButton);
+        imageButton_back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageView view = (ImageView) v;
+                        view.getDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageView view = (ImageView) v;
+                        //clear the overlay
+                        view.getDrawable().clearColorFilter();
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+        imageButton_back.setVisibility(View.VISIBLE);
+        imageButton_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClientSendMessage.this, MainActivity.class);
+                startActivity(intent);
+                ClientSendMessage.this.finish();
+            }
+        });
+
+
 
         editText_specificQuestion = (EditText) findViewById(R.id.edit_view_client_message_specific_question);
         edit_view_client_message_situation = (EditText) findViewById(R.id.edit_view_client_message_situation);
@@ -254,7 +294,7 @@ public class ClientSendMessage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (editText_specificQuestion.getText().toString().isEmpty() || edit_view_client_message_situation.getText().toString().isEmpty()) {
+                if ( (editText_specificQuestion.getText().toString().isEmpty() || edit_view_client_message_situation.getText().toString().isEmpty()) && MessageType.contains("text")) {
                     Toast.makeText(ClientSendMessage.this, "Please write question and situation", Toast.LENGTH_SHORT).show();
                 } else if (Integer.parseInt(userSession.getUserCredits()) < 450) {
                     Intent intent = new Intent(mContext, CreditsActivity.class);
@@ -305,7 +345,7 @@ public class ClientSendMessage extends AppCompatActivity {
         payload.setPnApns(pnApns);
 
 
-        data.setAlert("You have got a new order.");
+        data.setAlert("You have recieved a new order.");
         data.setAppType("advisor");
         data.setBadge(1);
         data.setSenderId(userSession.getUserId());

@@ -4,11 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -72,6 +74,29 @@ public class SettingActivity extends AppCompatActivity {
         headerTitle = (TextView) toolbar.findViewById(R.id.title_text);
         MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
         imageButton_back = (ImageButton) toolbar.findViewById(R.id.tool_bar_backButton);
+        imageButton_back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageView view = (ImageView) v;
+                        view.getDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageView view = (ImageView) v;
+                        //clear the overlay
+                        view.getDrawable().clearColorFilter();
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
         TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
         headerTitle.setText("Setting");
@@ -94,7 +119,7 @@ public class SettingActivity extends AppCompatActivity {
         editText_email = (EditText)findViewById(R.id.et_email);
         editText_password = (EditText)findViewById(R.id.et_password);
         button_register = (Button)findViewById(R.id.button_register);
-
+        editText_dob.setText(new UserSession(this).getUserDOB());
         editText_dob.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

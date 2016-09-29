@@ -1,5 +1,6 @@
 package avreye.mytarotadvisor.ui;
 
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -41,6 +42,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         toolbar.findViewById(R.id.title_text).setVisibility(View.GONE);
         ((TextView) toolbar.findViewById(R.id.toolbar_credits)).setText(new UserSession(this).getUserCredits());
+        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        TextView textView_credits1 = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        textView_credits.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits1.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits.setTextSize(12f);
 
         final VideoView videoView =
                 (VideoView) findViewById(R.id.mp_video_view);
@@ -67,7 +73,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
 
         MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
-        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
         if(mUserSession.getUserType().contains("advisor"))
         {

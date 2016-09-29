@@ -1,13 +1,18 @@
 package avreye.mytarotadvisor.ui;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +49,11 @@ public class CreditsActivity extends AppCompatActivity {
     TextView textView_my_credits;
     TextView textView_message;
     Retrofit retrofit;
+    TextView textView_title;
+    private TextView headerTitle;
+    private TextView MyCredits;
+    private Toolbar toolbar;
+    ImageButton imageButton_back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +73,48 @@ public class CreditsActivity extends AppCompatActivity {
         else
             textView_message.setVisibility(View.VISIBLE);
         textView_my_credits.setText(" Balance : " + new UserSession(this).getUserCredits().toString() + " credits");
+
+
+
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        headerTitle = (TextView) toolbar.findViewById(R.id.title_text);
+        MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        MyCredits.setText(new UserSession(this).getUserCredits().toString());
+        imageButton_back = (ImageButton) toolbar.findViewById(R.id.tool_bar_backButton);
+        imageButton_back.setVisibility(View.VISIBLE);
+        imageButton_back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        ImageView view = (ImageView) v;
+                        view.getDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        view.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        ImageView view = (ImageView) v;
+                        //clear the overlay
+                        view.getDrawable().clearColorFilter();
+                        view.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+        imageButton_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreditsActivity.this, MainActivity.class);
+                startActivity(intent);
+                CreditsActivity.this.finish();
+            }
+        });
 
 /////////////////////////////////////
 

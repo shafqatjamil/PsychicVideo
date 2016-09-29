@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -149,6 +150,14 @@ public class ChatActivityforUser extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         TextView textView = (TextView) toolbar.findViewById(R.id.title_text);
+
+        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        TextView textView_credits1 = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        textView_credits.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits1.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits.setTextSize(12f);
+
+
         AdvisorName = getIntent().getStringExtra("advisor_name");
         AdvisorID = getIntent().getStringExtra("advisor_id");
 
@@ -251,7 +260,6 @@ public class ChatActivityforUser extends AppCompatActivity {
 
 
 
-        TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
         if(mUserSession.getUserType().contains("advisor"))
         {
@@ -308,7 +316,7 @@ public class ChatActivityforUser extends AppCompatActivity {
         pnApns.setAps(aps);
         payload.setPnApns(pnApns);
 
-        data.setAlert("You have got a new order.");
+        data.setAlert("You have recieved a new order.");
         data.setAppType("advisor");
         data.setBadge(1);
         data.setSenderId(userSession.getUserId());

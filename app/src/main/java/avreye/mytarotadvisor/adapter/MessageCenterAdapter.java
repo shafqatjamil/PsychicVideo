@@ -25,6 +25,7 @@ import java.util.TimeZone;
 
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.Object.Message;
+import avreye.mytarotadvisor.helper.DatabaseHelper;
 import avreye.mytarotadvisor.helper.UserSession;
 import avreye.mytarotadvisor.ui.ChatActivityforAdvisor;
 import avreye.mytarotadvisor.ui.ChatActivityforUser;
@@ -42,6 +43,7 @@ public class MessageCenterAdapter extends BaseAdapter {
     Retrofit retrofit;
     private ArrayList<Message> mOriginalValues; // Original Values
     private ArrayList<Message> mDisplayedValues;
+    DatabaseHelper databaseHelper;
     public MessageCenterAdapter(Context mContext, ArrayList<Message> userlist) {
         this.mOriginalValues = userlist;
         this.mDisplayedValues = userlist;
@@ -52,6 +54,7 @@ public class MessageCenterAdapter extends BaseAdapter {
                 .baseUrl(Constants.Advisor_API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        databaseHelper = new DatabaseHelper(mContext);
     }
     @Override
     public int getCount() {
@@ -105,7 +108,7 @@ public class MessageCenterAdapter extends BaseAdapter {
         {
             viewHolder.textView_dob.setText(UserList.get(position).getDob());
             Log.e("DOB",UserList.get(position).getDob());
-            if(UserList.get(position).getSender_id().contains(userSession.getUserId()))
+            if(!databaseHelper.isPending(UserList.get(position).getSender_id()))
             {
                 viewHolder.textView_complete.setText("COMPLETE");
                 viewHolder.textView_complete.setTextColor(ContextCompat.getColor(mContext,R.color.colorPrimary) );
@@ -117,7 +120,7 @@ public class MessageCenterAdapter extends BaseAdapter {
             }
         }
 
-        if(new UserSession(mContext).getUserType().contains("client"))
+        if(userSession.getUserType().contains("client"))
         {
             viewHolder.linearLayout_Advisor.setVisibility(View.GONE);
             viewHolder.relativeLayout_Clients.setVisibility(View.VISIBLE);

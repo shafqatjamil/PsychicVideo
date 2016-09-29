@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/white"
-    tools:context="avreye.mytarotadvisor.ui.MainActivity">
+    android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:theme="@style/ThemewithActionBar.AppBarOverlay">
+        android:background="@color/white">
 
         <include
             android:id="@+id/tool_bar"
             layout="@layout/toolbar" />
         <LinearLayout
+            android:id="@+id/tabbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
             android:weightSum="4"
-            android:background="@color/aluminum">
-            <ImageButton
+            android:background="@color/white">
+            <avreye.mytarotadvisor.helper.ClickableImageView
+                android:id="@+id/tabbar_home"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:background="@color/transparent"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:src="@drawable/home"/>
-            <ImageButton
+            <avreye.mytarotadvisor.helper.ClickableImageView
+                android:id="@+id/tabbar_message"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:background="@color/transparent"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:src="@drawable/message"/>
-            <ImageButton
+            <avreye.mytarotadvisor.helper.ClickableImageView
+                android:id="@+id/tabbar_news"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:background="@color/transparent"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
                 android:src="@drawable/news"/>
-            <ImageButton
+            <avreye.mytarotadvisor.helper.ClickableImageView
+                android:id="@+id/tabbar_dailytarot"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:background="@color/transparent"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
-                android:src="@drawable/dailytarot"/>
+                android:src="@drawable/tarot_logo_sel"/>
 
         </LinearLayout>
 

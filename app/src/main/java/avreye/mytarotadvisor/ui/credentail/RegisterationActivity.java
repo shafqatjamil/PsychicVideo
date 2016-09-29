@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import avreye.mytarotadvisor.Object.RegistrationResponse;
@@ -128,11 +130,13 @@ public class RegisterationActivity extends AppCompatActivity {
 
     void HitAPI() {
 
+        String tarot_id = Settings.Secure.getString(RegisterationActivity.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
         APIService apiservice = retrofit.create(APIService.class);
         Call<RegistrationResponse> APICall = apiservice.RegisterUser(editText_name.getText().toString()
                                                         ,editText_password.getText().toString()
                                                         ,editText_email.getText().toString()
-                                                        ,"101", Constants.DEFAULT_TOTAL_CREDITS,Constants.TOTAL_ORDERS,editText_dob.getText().toString());// set it
+                                                        ,"101", Constants.DEFAULT_TOTAL_CREDITS,Constants.TOTAL_ORDERS,tarot_id,editText_dob.getText().toString());// set it
 
         APICall.enqueue(new Callback<RegistrationResponse>() {
             @Override
@@ -296,12 +300,31 @@ public class RegisterationActivity extends AppCompatActivity {
         } else {
             editText_name.setError(null);
         }
-        if (userDob.isEmpty() || userDob.length() < 4 || userDob.length() > 50) {
-            editText_dob.setError("enter valid user name");
+        String[] strs = userDob.split("-");
+        if (getAge(Integer.parseInt(strs[0]),Integer.parseInt(strs[1]),Integer.parseInt(strs[2])) < 18) {
+            editText_dob.setError("Adults Only.Restricted to age 18 and above.");
             valid = false;
         } else {
             editText_dob.setError(null);
         }
         return valid;
+    }
+    public int getAge (int _year, int _month, int _day) {
+
+        GregorianCalendar cal = new GregorianCalendar();
+        int y, m, d, a;
+
+        y = cal.get(Calendar.YEAR);
+        m = cal.get(Calendar.MONTH);
+        d = cal.get(Calendar.DAY_OF_MONTH);
+        cal.set(_year, _month, _day);
+        a = y - cal.get(Calendar.YEAR);
+        if ((m < cal.get(Calendar.MONTH))
+                || ((m == cal.get(Calendar.MONTH)) && (d < cal
+                .get(Calendar.DAY_OF_MONTH)))) {
+            --a;
+        }
+
+        return a;
     }
 }

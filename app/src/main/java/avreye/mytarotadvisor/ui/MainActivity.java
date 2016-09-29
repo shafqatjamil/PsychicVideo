@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -23,11 +27,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.appboy.Appboy;
@@ -43,9 +49,11 @@ import com.squareup.picasso.Picasso;
 import avreye.mytarotadvisor.AppController;
 import avreye.mytarotadvisor.Object.AdvisorProfilePictureResponse;
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
+import avreye.mytarotadvisor.Object.PromoCodeReponse;
 import avreye.mytarotadvisor.PubnubService;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.helper.APIService;
+import avreye.mytarotadvisor.helper.ClickableImageView;
 import avreye.mytarotadvisor.helper.UserSession;
 import avreye.mytarotadvisor.ui.credentail.ClientLoginActivity;
 import avreye.mytarotadvisor.utils.Constants;
@@ -68,8 +76,14 @@ public class MainActivity extends AppCompatActivity
     UserSession mUserSession;
     private Retrofit retrofit;
     private Retrofit retrofit1;
+    private Retrofit retrofit_Coupon;
     boolean flag;
+    ClickableImageView imageView1;
+    ClickableImageView imageView2;
+    ClickableImageView imageView3;
+    ClickableImageView imageView4;
     com.joooonho.SelectableRoundedImageView selectableRoundedImageView;
+    Menu menu;
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -89,16 +103,117 @@ public class MainActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
+        if (mUserSession.getUserType().equals("client")) {
+            imageView1 = (ClickableImageView) findViewById(R.id.tabbar_home);
+            imageView2 = (ClickableImageView) findViewById(R.id.tabbar_message);
+            imageView3 = (ClickableImageView) findViewById(R.id.tabbar_news);
+            imageView4 = (ClickableImageView) findViewById(R.id.tabbar_dailytarot);
+            imageView1.SetActivated();
+            imageView2.SetDeActivated();
+            imageView3.SetDeActivated();
+            imageView4.SetDeActivated();
+            imageView1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView1.SetActivated();
+                    imageView2.SetDeActivated();
+                    imageView3.SetDeActivated();
+                    imageView4.SetDeActivated();
+
+
+
+                    String sourceString = "OUR" + "<b>" + "ADVISORS" + "</b> ";
+                    headerTitle.setGravity(Gravity.CENTER);
+                    headerTitle.setText(Html.fromHtml(sourceString));
+
+                    Fragment newFragment = new AdvisorListFragment();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+                    transaction.replace(R.id.container, newFragment);
+                    transaction.commit();
+
+                    mMessageCenter = null;
+                }
+            });
+            imageView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView1.SetDeActivated();
+                    imageView2.SetActivated();
+                    imageView3.SetDeActivated();
+                    imageView4.SetDeActivated();
+                    String sourceString = "<b>" + "MESSAGE" + "</b> " + "CENTER";
+                    headerTitle.setGravity(Gravity.CENTER);
+                    headerTitle.setText(Html.fromHtml(sourceString));
+
+                    Fragment messageFragment = new MessageCenter();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+                    transaction.replace(R.id.container, messageFragment);
+                    transaction.commit();
+                    mMessageCenter = (MessageCenter) messageFragment;
+                }
+            });
+            imageView3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView1.SetDeActivated();
+                    imageView2.SetDeActivated();
+                    imageView3.SetActivated();
+                    imageView4.SetDeActivated();
+
+                    String sourceString = "NEWSFEED";
+                    headerTitle.setGravity(Gravity.CENTER);
+                    headerTitle.setText(Html.fromHtml(sourceString));
+                    AppboyFeedFragment messageFragment = new AppboyFeedFragment();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+                    transaction.replace(R.id.container, messageFragment);
+                    transaction.commit();
+                }
+            });
+            imageView4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageView1.SetDeActivated();
+                    imageView2.SetDeActivated();
+                    imageView3.SetDeActivated();
+                    imageView4.SetActivated();
+                    String sourceString = "DAILYTAROT";
+                    headerTitle.setGravity(Gravity.CENTER);
+                    headerTitle.setText(Html.fromHtml(sourceString));
+                    mMessageCenter = null;
+                    Fragment userListFragment = new DailyTarotAdvisorFragment();
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim);
+                    transaction.replace(R.id.container, userListFragment);
+                    transaction.commit();
+                }
+            });
+        }
+        else
+        {
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.tabbar);
+            linearLayout.setVisibility(View.GONE);
+        }
+
+
+
+
+
 
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setShowHideAnimationEnabled(true);
         appController = (AppController) getApplicationContext();
         appController.SetActivity(this);
         headerTitle = (TextView) toolbar.findViewById(R.id.title_text);
         MyCredits = (TextView) toolbar.findViewById(R.id.toolbar_credits);
         TextView textView_credits = (TextView) toolbar.findViewById(R.id.Credit_textview);
+        TextView textView_credits1 = (TextView) toolbar.findViewById(R.id.toolbar_credits);
+        textView_credits.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits1.setTypeface(Typeface.create("MyriadPro-Cond", Typeface.NORMAL));
+        textView_credits.setTextSize(12f);
         ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
 
         if(mUserSession.getUserType().contains("advisor"))
@@ -125,13 +240,25 @@ public class MainActivity extends AppCompatActivity
         //  ImageView imageView = (ImageView) headerView.findViewById(R.id.nav_header_user_image);
         TextView textView_name = (TextView) headerView.findViewById(R.id.nav_header_user_name);
         TextView textView_email = (TextView) headerView.findViewById(R.id.nav_header_user_email);
+        TextView textView_version = (TextView) headerView.findViewById(R.id.nav_header_user_version);
         selectableRoundedImageView = (com.joooonho.SelectableRoundedImageView) headerView.findViewById(R.id.nav_header_user_image);
         selectableRoundedImageView.setVisibility(View.GONE);
         textView_name.setText(mUserSession.getUserName());
         textView_email.setText(mUserSession.getUserDOB());
+        if(mUserSession.getUserType().contains("advisor"))
+            textView_email.setVisibility(View.GONE);
+
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        int verCode = pInfo.versionCode;
+        textView_version.setText("Version: " + verCode);
 
 
-        Menu menu = navigationView.getMenu();
+        menu = navigationView.getMenu();
 
 
         ////Deafault activity/////
@@ -146,17 +273,23 @@ public class MainActivity extends AppCompatActivity
                 //  .client(defaultHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        retrofit_Coupon = new Retrofit.Builder()
+                .baseUrl(Constants.Promocode_API_URL)
+                //  .client(defaultHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         if (mUserSession.getUserType().equals("client")) {
 
-            String sourceString = "<i>OUR</i>" + "<b>" + "ADVISORS" + "</b> ";
+            String sourceString = "OUR" + "<b>" + "ADVISORS" + "</b> ";
             headerTitle.setGravity(Gravity.CENTER);
             headerTitle.setText(Html.fromHtml(sourceString));
             MyCredits.setText(mUserSession.getUserCredits());
 
 
 
-            menu.getItem(8).setVisible(false);
+            menu.getItem(3).setVisible(false);
             menu.getItem(9).setVisible(false);
+            menu.getItem(10).setVisible(false);
 
 //            if(getIntent().getStringExtra("flag") != null && getIntent().getStringExtra("flag") != "")
 //            {
@@ -185,9 +318,10 @@ public class MainActivity extends AppCompatActivity
             menu.getItem(1).setVisible(false);
             menu.getItem(2).setVisible(false);
             menu.getItem(3).setVisible(false);
-            menu.getItem(5).setVisible(false);
+            menu.getItem(4).setVisible(false);
             menu.getItem(6).setVisible(false);
             menu.getItem(7).setVisible(false);
+            menu.getItem(8).setVisible(false);
 
 
             Fragment messageFragment = new MessageCenter();
@@ -332,7 +466,11 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, CreditsActivity.class);
             intent.putExtra("message", "no message");
             startActivity(intent);
-        } else if (id == R.id.nav_order_history) {
+        } else if (id == R.id.promo_code) {
+            mMessageCenter = null;
+            Intent intent = new Intent(MainActivity.this, PromoCodeActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_order_history) {
             mMessageCenter = null;
             Intent intent = new Intent(MainActivity.this, OrderHistory.class);
             startActivity(intent);
@@ -431,8 +569,10 @@ public class MainActivity extends AppCompatActivity
 
 
        // registerReceiver();
-
-        GetMyCredits(mUserSession.getUserId());
+        if(mUserSession.getUserType().equals("client")) {
+            GetMyCredits(mUserSession.getUserId());
+            isCouponAvailable();
+        }
     }
     void GetMyCredits(final String id) {
         APIService apiservice = retrofit.create(APIService.class);
@@ -520,6 +660,33 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    void isCouponAvailable()
+    {
+        APIService apiservice = retrofit_Coupon.create(APIService.class);
+        Call<GetMyCreditsResponse> APICall = apiservice.isCoupunAvailable();
+        APICall.enqueue(new Callback<GetMyCreditsResponse>() {
+            @Override
+            public void onResponse(Call<GetMyCreditsResponse> call, Response<GetMyCreditsResponse> response) {
+
+                if (response.body() != null) {
+
+                    if (response.body().getResult() == 1) {
+
+                        menu.getItem(3).setVisible(true);
+
+                    } else {
+                        Log.e("message history" ,"error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMyCreditsResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     public void onStart() {
         super.onStart();
         Appboy.getInstance(MainActivity.this).openSession(MainActivity.this);
