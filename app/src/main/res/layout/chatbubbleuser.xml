@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <avreye.mytarotadvisor.helper.MlRoundedImageView
             android:id="@+id/user_image_left"
             android:layout_width="30dp"
             android:layout_height="30dp"

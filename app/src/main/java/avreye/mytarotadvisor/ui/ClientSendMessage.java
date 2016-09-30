@@ -139,6 +139,7 @@ public class ClientSendMessage extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
         userSession = new UserSession(this);
         mContext = this;
@@ -336,7 +337,7 @@ public class ClientSendMessage extends AppCompatActivity {
         Payload.PnGcm pnGcm = new Payload.PnGcm();
 
         aps.setAlert("You have got a new order.");
-        aps.setAppType("advisor");
+        aps.setAppType("user");
         aps.setBadge(1);
         aps.setSenderId(userSession.getUserId());
         aps.setSenderDisplayname(userSession.getUserName());
@@ -779,7 +780,7 @@ public class ClientSendMessage extends AppCompatActivity {
                 .allowRetry(true)                                  // Whether or not 'Retry' is visible during playback
                 .autoSubmit(false)                                 // Whether or not user is allowed to playback videos after recording. This can affect other things, discussed in the next section.
                 .saveDir(getApplicationContext().getFilesDir().getPath())                               // The folder recorded videos are saved to
-                .showPortraitWarning(true)                         // Whether or not a warning is displayed if the user presses record in portrait orientation
+                .showPortraitWarning(false)                         // Whether or not a warning is displayed if the user presses record in portrait orientation
                 .defaultToFrontFacing(true)                       // Whether or not the camera will initially show the front facing camera
                 .retryExits(false)                                 // If true, the 'Retry' button in the playback screen will exit the camera instead of going back to the recorder
                 .restartTimerOnRetry(false)                        // If true, the countdown timer is reset to 0 when the user taps 'Retry' in playback
@@ -789,7 +790,7 @@ public class ClientSendMessage extends AppCompatActivity {
                 .videoFrameRate(24)                                // Sets a custom frame rate (FPS) for video recording.
                 .qualityProfile(MaterialCamera.QUALITY_LOW)       // Sets a quality profile, manually setting bit rates or frame rates with other settings will overwrite individual quality profile settings
                 .videoPreferredAspect(16f/9f)
-                .maxAllowedFileSize(1024 * 1024 * 5)               // Sets a max file size of 5MB, recording will stop if file reaches this limit. Keep in mind, the FAT file system has a file size limit of 4GB.
+                .maxAllowedFileSize(1024 * 1024 * 500)               // Sets a max file size of 5MB, recording will stop if file reaches this limit. Keep in mind, the FAT file system has a file size limit of 4GB.
                 .iconRecord(R.drawable.mcam_action_capture)        // Sets a custom icon for the button used to start recording
                 .iconStop(R.drawable.mcam_action_stop)             // Sets a custom icon for the button used to stop recording
                 .iconFrontCamera(R.drawable.mcam_camera_front)     // Sets a custom icon for the button used to switch to the front camera

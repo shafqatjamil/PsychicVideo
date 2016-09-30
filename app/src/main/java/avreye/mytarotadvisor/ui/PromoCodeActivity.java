@@ -55,6 +55,7 @@ public class PromoCodeActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
 
 
@@ -142,10 +143,11 @@ public class PromoCodeActivity extends AppCompatActivity {
                     if (response.body().getStatus() == 1) {
 
                         String temp = userSession.getUserCredits();
-                        UpdateCredits(userSession.getUserId(),
-                                Integer.parseInt(temp) + Integer.parseInt(response.body().getCredit()) + "");
-
                         userSession.setUserCredits(Integer.parseInt(temp) + Integer.parseInt(response.body().getCredit()) + "");
+                        ((TextView)toolbar.findViewById(R.id.toolbar_credits)).setText(userSession.getUserCredits());
+                        UpdateCredits(userSession.getUserId(),Integer.parseInt(temp) + Integer.parseInt(response.body().getCredit()) + "");
+
+
 
                         progressDialog.hide();
                     } else {
@@ -177,7 +179,7 @@ public class PromoCodeActivity extends AppCompatActivity {
 
                     if (response.body().getResult() == 1) {
 
-                        ((TextView)toolbar.findViewById(R.id.toolbar_credits)).setText(userSession.getUserCredits());
+
                         Intent intent = new Intent(PromoCodeActivity.this,MainActivity.class);
                         PromoCodeActivity.this.startActivity(intent);
 

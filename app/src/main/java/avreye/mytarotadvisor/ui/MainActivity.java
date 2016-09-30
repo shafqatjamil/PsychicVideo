@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
         if (mUserSession.getUserType().equals("client")) {
             imageView1 = (ClickableImageView) findViewById(R.id.tabbar_home);
@@ -454,7 +455,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_faq) {
             mMessageCenter = null;
             Intent intent = new Intent(MainActivity.this, FaqTosPp.class);
-            intent.putExtra("screenname","Faq");
+            intent.putExtra("screenname","FAQ");
             intent.putExtra("url","https://storage.googleapis.com/www.psychictxt.com/FAQ.htm");
             startActivity(intent);
         } else if (id == R.id.nav_tutorial) {

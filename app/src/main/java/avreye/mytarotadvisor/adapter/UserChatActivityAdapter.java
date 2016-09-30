@@ -52,8 +52,8 @@ public class UserChatActivityAdapter extends BaseAdapter {
     private Retrofit retrofit;
     private String Advisor_id;
     private String Client_id;
-
-    public UserChatActivityAdapter(Context mContext, ArrayList<Message> userlist, String Advisor_id, String Client_id) {
+    String advisorprofilepicurl;
+    public UserChatActivityAdapter(Context mContext, ArrayList<Message> userlist, String Advisor_id, String Client_id,String advisorprofilepicurl) {
         this.mContext = mContext;
         this.UserList = userlist;
         this.Advisor_id = Advisor_id;
@@ -64,6 +64,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
                 //  .client(defaultHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        this.advisorprofilepicurl = advisorprofilepicurl;
     }
 
     @Override
@@ -98,7 +99,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
             viewHolder.imageView_video = (com.github.siyamed.shapeimageview.mask.PorterShapeImageView) convertView.findViewById(R.id.video_thumbnail);
             viewHolder.parent_layout = (LinearLayout) convertView.findViewById(R.id.bubble_layout_parent);
             viewHolder.user_image_right = (ImageView) convertView.findViewById(R.id.user_image_right);
-            viewHolder.user_image_left = (ImageView) convertView.findViewById(R.id.user_image_left);
+            viewHolder.user_image_left = (avreye.mytarotadvisor.helper.MlRoundedImageView) convertView.findViewById(R.id.user_image_left);
             viewHolder.video_thumbnail_framlayout = (FrameLayout) convertView.findViewById(R.id.video_thumbnail_framlayout);
             viewHolder.video_thumbnail_play_button = (ImageButton) convertView.findViewById(R.id.video_thumbnail_play_button);
             viewHolder.chat_review_rating = (com.iarcuschin.simpleratingbar.SimpleRatingBar) convertView.findViewById(R.id.chat_review_rating);
@@ -124,16 +125,16 @@ public class UserChatActivityAdapter extends BaseAdapter {
                 dialog.setContentView(R.layout.rating_popup);
                 Button buttonSubmit = (Button) dialog.findViewById(R.id.button_submit);
                 Button buttonCancel = (Button) dialog.findViewById(R.id.button_cancel);
-                final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.popup_ratingBar);
-                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-
-                    @Override
-                    public void onRatingChanged(RatingBar ratingBar, float rating,
-                                                boolean fromUser) {
-                        if (rating < 1.0f)
-                            ratingBar.setRating(1.0f);
-                    }
-                });
+                final com.iarcuschin.simpleratingbar.SimpleRatingBar ratingBar = (com.iarcuschin.simpleratingbar.SimpleRatingBar) dialog.findViewById(R.id.popup_ratingBar);
+//                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//
+//                    @Override
+//                    public void onRatingChanged(RatingBar ratingBar, float rating,
+//                                                boolean fromUser) {
+//                        if (rating < 1.0f)
+//                            ratingBar.setRating(1.0f);
+//                    }
+//                });
                 final EditText editText = (EditText) dialog.findViewById(R.id.comment_rating);
                 buttonCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -240,6 +241,7 @@ public class UserChatActivityAdapter extends BaseAdapter {
             viewHolder.user_image_left.setVisibility(View.GONE);
             viewHolder.user_image_right.setVisibility(View.VISIBLE);
 
+
             if (UserList.get(position).getText().toString().contains("/~*/")) {
 
                 int index = UserList.get(position).getText().toString().indexOf("/~*/");
@@ -302,6 +304,8 @@ public class UserChatActivityAdapter extends BaseAdapter {
             viewHolder.parent_layout.setGravity(Gravity.LEFT);
 
             viewHolder.user_image_left.setVisibility(View.VISIBLE);
+          //  Picasso.with(mContext).load(Constants.Advisor_IMAGE_URL  + advisorprofilepicurl).into( viewHolder.user_image_left);
+            Picasso.with(mContext).load(new UserSession(mContext).getUserProfilePictureUrl(Advisor_id)).into(viewHolder.user_image_left);
             viewHolder.user_image_right.setVisibility(View.GONE);
 
 
@@ -383,7 +387,8 @@ public class UserChatActivityAdapter extends BaseAdapter {
         TextView video_thumbnail_rate_now;
         com.github.siyamed.shapeimageview.mask.PorterShapeImageView imageView_video;
         LinearLayout parent_layout;
-        ImageView user_image_right, user_image_left;
+        ImageView user_image_right;
+        avreye.mytarotadvisor.helper.MlRoundedImageView user_image_left;
         FrameLayout video_thumbnail_framlayout;
         ImageButton video_thumbnail_play_button;
         com.iarcuschin.simpleratingbar.SimpleRatingBar chat_review_rating;

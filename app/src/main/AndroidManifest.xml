@@ -72,6 +72,13 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ChatActivityforUser"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.ChatActivityforAdvisor"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -170,11 +177,7 @@
         <activity
             android:name=".ui.AdvisorRating"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".ui.ChatActivityforAdvisor"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".ui.SettingActivity"
             android:screenOrientation="portrait"

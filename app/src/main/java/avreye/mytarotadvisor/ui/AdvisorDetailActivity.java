@@ -78,6 +78,7 @@ public class AdvisorDetailActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
 
         Appboy.getInstance(AdvisorDetailActivity.this).logCustomEvent(getIntent().getStringExtra("advisor_name")+"_PsychicProfileViewed");

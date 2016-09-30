@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.pubnub.api.Pubnub;
+
+import avreye.mytarotadvisor.utils.Constants;
+
 public class UserSession {
     private final String USER_TYPE = "user_type";
     private final String USER_ID = "user_id";
@@ -163,6 +167,9 @@ public class UserSession {
 
     public boolean destroyUserSession() {
         spEditor = sp.edit();
+        Pubnub pubnub = new Pubnub(Constants.PUBNUB_PUBLISH_KEY, Constants.PUBNUB_SUBSCRIBE_KEY);
+        pubnub.unsubscribe(this.getUserChannelName());
+        pubnub.disablePushNotificationsOnChannel(this.getUserChannelName(),this.getFCM_TOKEN());
         spEditor.remove(IS_LOGGED_IN);
         spEditor.remove(USER_EMAIL);
         spEditor.remove(USER_CREDITS);
@@ -174,6 +181,8 @@ public class UserSession {
         spEditor.remove(USER_CHANNEL_NAME);
         spEditor.apply();
         new DatabaseHelper(mContext).FlushDatabase();
+
+
         return true;
     }
 

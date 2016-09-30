@@ -53,6 +53,7 @@ import com.google.gson.Gson;
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,7 @@ import java.util.Random;
 
 import avreye.mytarotadvisor.AppController;
 import avreye.mytarotadvisor.Object.AdvisorInfo;
+import avreye.mytarotadvisor.Object.AdvisorProfilePictureResponse;
 import avreye.mytarotadvisor.Object.GetAdvisorStatusReponse;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.Object.Payload;
@@ -121,9 +123,28 @@ public class ChatActivityforUser extends AppCompatActivity {
     static String MessageType = "text";
     private TransferUtility transferUtility;
     @Override
+    public void onNewIntent(Intent intent){
+        Bundle extras = intent.getExtras();
+        if(extras != null){
+            if(extras.containsKey("advisor_id"))
+            {
+                //setContentView(R.layout.activity_chat_activityfor_user);
+                AdvisorName = getIntent().getStringExtra("advisor_name");
+                AdvisorID = getIntent().getStringExtra("advisor_id");
+                Log.e("ChatActivityforUser","advisor_id Available");
+            }
+            Log.e("ChatActivityforUser","Extras Available");
+        }
+        else
+        {
+            Log.e("ChatActivityforUser","Extras null");
+        }
+
+
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         VideoName = "";
         MessageType = "text";
         setContentView(R.layout.activity_chat_activityfor_user);
@@ -140,6 +161,7 @@ public class ChatActivityforUser extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
+            window.setNavigationBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
         userSession = new UserSession(this);
         appController = (AppController) getApplicationContext();
@@ -158,8 +180,8 @@ public class ChatActivityforUser extends AppCompatActivity {
         textView_credits.setTextSize(12f);
 
 
-        AdvisorName = getIntent().getStringExtra("advisor_name");
-        AdvisorID = getIntent().getStringExtra("advisor_id");
+        onNewIntent(getIntent());
+
 
         textView1 = (TextView)toolbar.findViewById(R.id.toolbar_credits);
         cost_info = (TextView) findViewById(R.id.cost_info);
@@ -184,7 +206,7 @@ public class ChatActivityforUser extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         messages = databaseHelper.getAllMessages(AdvisorID);
 
-        userChatActivityAdapter = new UserChatActivityAdapter(this,messages,AdvisorID,userSession.getUserId());
+        userChatActivityAdapter = new UserChatActivityAdapter(this,messages,AdvisorID,userSession.getUserId(),AdvisorName+".jpg");
         assert messageList != null;
         messageList.setAdapter(userChatActivityAdapter);
         messageList.setSelection(userChatActivityAdapter.getCount() - 1);
@@ -257,23 +279,9 @@ public class ChatActivityforUser extends AppCompatActivity {
 
             }
         });
+       // Log.e("Notificatio",AdvisorID);
+        HitAPI_getStatus(AdvisorID);
 
-
-
-        ImageView imageView = (ImageView) toolbar.findViewById(R.id.credit_bg);
-        if(mUserSession.getUserType().contains("advisor"))
-        {
-            textView1.setVisibility(View.INVISIBLE);
-            imageView.setVisibility(View.INVISIBLE);
-            textView_credits.setVisibility(View.INVISIBLE);
-        }
-        if(!userSession.getUserType().contains("client")) {
-            cost_info.setVisibility(View.GONE);
-        }
-        else
-        {
-            HitAPI_getStatus(getIntent().getStringExtra("advisor_id"));
-        }
         //////////////////////////////////////
         transferUtility = Util.getTransferUtility(this);
         credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -282,6 +290,7 @@ public class ChatActivityforUser extends AppCompatActivity {
                 Regions.US_EAST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
         );
     }
+
     void send_message()
     {
         SimpleDateFormat mFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z", Locale.getDefault());
@@ -306,7 +315,7 @@ public class ChatActivityforUser extends AppCompatActivity {
         aps.setAlert("Your order has been completed");
 
 
-        aps.setAppType("advisor");
+        aps.setAppType("user");
 
 
         aps.setBadge(1);
@@ -824,6 +833,33 @@ public class ChatActivityforUser extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
         }
+    }
+    void GetProfilePicture(final String id) {
+        APIService apiservice = retrofit1.create(APIService.class);
+        Call<AdvisorProfilePictureResponse> APICall = apiservice.getAdvisorPicture(id);
+        APICall.enqueue(new retrofit2.Callback<AdvisorProfilePictureResponse>() {
+            @Override
+            public void onResponse(Call<AdvisorProfilePictureResponse> call, Response<AdvisorProfilePictureResponse> response) {
+
+                if (response.body() != null) {
+
+                    if (response.body().getResult() == 1) {
+
+                      //  return response.body().getMessage();
+                        //Picasso.with(MainActivity.this).load(Constants.Advisor_IMAGE_URL  + response.body().getMessage()).into(selectableRoundedImageView);
+
+                    } else {
+                        Log.e("message history" ,"error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdvisorProfilePictureResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

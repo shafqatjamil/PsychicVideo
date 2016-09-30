@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import avreye.mytarotadvisor.ui.ChatActivityforAdvisor;
+import avreye.mytarotadvisor.ui.ChatActivityforUser;
 import avreye.mytarotadvisor.ui.MainActivity;
 import avreye.mytarotadvisor.ui.MessageCenter;
 
@@ -22,6 +26,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "StartingAndroid";
     AppController appController;
+    static  int nid = 0;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -32,22 +37,49 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         appController = (AppController) getApplicationContext();
         //Calling method to generate notification
-        sendNotification(remoteMessage.getData().get("sender_displayname"),remoteMessage.getData().get("alert"));
+        Log.e("notification111",remoteMessage.getData().get("sender_Id"));
+        sendNotification(remoteMessage.getData().get("sender_displayname"),remoteMessage.getData().get("alert"),
+                remoteMessage.getData().get("sender_Id"),remoteMessage.getData().get("appType"),remoteMessage.getData().get("sender_displayname"));
     }
 
     //This method is only generating push notification
-    private void sendNotification(String title, String messageBody) {
+    private void sendNotification(String title, String messageBody, String sendid, String apptype,String senderdiplayname) {
 
         if(appController.GetActivity() != null)
         {
 
-           return;
+           //return;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        Log.e("notification",sendid);
+        Intent intent;
+        PendingIntent pendingIntent;
+        if(apptype.contains("user"))
+        {
+             intent = new Intent(this, ChatActivityforAdvisor.class);
+
+
+            Bundle bundle = new Bundle();
+            bundle.putString("advisor_id",sendid);
+            bundle.putString("advisor_name",senderdiplayname);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+             pendingIntent = PendingIntent.getActivity(this, nid++, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
+        else
+        {
+            intent = new Intent(this, ChatActivityforUser.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("advisor_id",sendid);
+            bundle.putString("advisor_name",senderdiplayname);
+            intent.putExtras(bundle);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            pendingIntent = PendingIntent.getActivity(this, nid++, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -61,6 +93,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(nid, notificationBuilder.build());
     }
 }
