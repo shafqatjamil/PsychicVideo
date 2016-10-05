@@ -11,6 +11,7 @@ import avreye.mytarotadvisor.Object.PromoCodeReponse;
 import avreye.mytarotadvisor.Object.RegistrationResponse;
 import avreye.mytarotadvisor.Object.SignUpBonusResponse;
 import avreye.mytarotadvisor.Object.UpdateClientResponse;
+import avreye.mytarotadvisor.Object.UpdateCreditResponse;
 import avreye.mytarotadvisor.Object.UpdateMessageStatusReponse;
 import avreye.mytarotadvisor.Object.UpdateStatusResponse;
 import retrofit2.Call;
@@ -82,7 +83,7 @@ public interface APIService {
 
     @FormUrlEncoded
     @POST("updateCredits")
-    Call<MessageHistoryResponse> updateCredits(@Field("id") String id, @Field("total_credit") String credits);
+    Call<UpdateCreditResponse> updateCredits(@Field("id") String id, @Field("total_credit") String credits);
 
     @FormUrlEncoded
     @POST("getCredits")

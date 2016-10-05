@@ -53,6 +53,7 @@
         android:layout_marginTop="16dp"
         android:text="relationkzcnjksbcdddedsdsxsacsacasd"
         android:textAlignment="center"
+        android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"

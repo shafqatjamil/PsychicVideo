@@ -16,7 +16,7 @@ import avreye.mytarotadvisor.ui.SupportActivity;
 public class CustomPagerAdapter extends PagerAdapter {
 
     private Context mContext;
-    int[] image_resources = {R.drawable.ts1,R.drawable.ts2,R.drawable.ts3,R.drawable.ts4};
+    int[] image_resources = {R.drawable.ts1,R.drawable.ts2,R.drawable.ts3,R.drawable.ts4,R.drawable.ts4};
     private  LayoutInflater layoutInflater;
     public CustomPagerAdapter(Context context) {
         mContext = context;

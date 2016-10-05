@@ -62,6 +62,7 @@ import java.util.Random;
 import avreye.mytarotadvisor.AppController;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.Object.Payload;
+import avreye.mytarotadvisor.Object.UpdateCreditResponse;
 import avreye.mytarotadvisor.PubnubService;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.adapter.AdvisorChatActivityAdapter;
@@ -339,10 +340,10 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
 
     void UpdateCredits(final String id, final String credits) {
         APIService apiservice = retrofit.create(APIService.class);
-        Call<MessageHistoryResponse> APICall = apiservice.updateCredits(id, credits);
-        APICall.enqueue(new retrofit2.Callback<MessageHistoryResponse>() {
+        Call<UpdateCreditResponse> APICall = apiservice.updateCredits(id, credits);
+        APICall.enqueue(new retrofit2.Callback<UpdateCreditResponse>() {
             @Override
-            public void onResponse(Call<MessageHistoryResponse> call, Response<MessageHistoryResponse> response) {
+            public void onResponse(Call<UpdateCreditResponse> call, Response<UpdateCreditResponse> response) {
                 if (response.body() != null) {
 
                     if (response.body().getResult() == 1) {
@@ -354,7 +355,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MessageHistoryResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateCreditResponse> call, Throwable t) {
             }
         });
     }

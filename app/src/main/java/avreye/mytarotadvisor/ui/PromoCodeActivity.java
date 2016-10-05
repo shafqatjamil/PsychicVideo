@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.Object.PromoCodeReponse;
+import avreye.mytarotadvisor.Object.UpdateCreditResponse;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.helper.APIService;
 import avreye.mytarotadvisor.helper.UserSession;
@@ -171,10 +172,10 @@ public class PromoCodeActivity extends AppCompatActivity {
 
         progressDialog.show();
         APIService apiservice = retrofit.create(APIService.class);
-        Call<MessageHistoryResponse> APICall = apiservice.updateCredits(id, credits);
-        APICall.enqueue(new Callback<MessageHistoryResponse>() {
+        Call<UpdateCreditResponse> APICall = apiservice.updateCredits(id, credits);
+        APICall.enqueue(new Callback<UpdateCreditResponse>() {
             @Override
-            public void onResponse(Call<MessageHistoryResponse> call, Response<MessageHistoryResponse> response) {
+            public void onResponse(Call<UpdateCreditResponse> call, Response<UpdateCreditResponse> response) {
                 if (response.body() != null) {
 
                     if (response.body().getResult() == 1) {
@@ -192,7 +193,7 @@ public class PromoCodeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MessageHistoryResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateCreditResponse> call, Throwable t) {
 
                 progressDialog.hide();
             }

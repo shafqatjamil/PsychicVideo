@@ -1,5 +1,6 @@
 package avreye.mytarotadvisor.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -8,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.anjlab.android.iab.v3.BillingProcessor;
+
 import java.util.ArrayList;
 
 import avreye.mytarotadvisor.Object.InAppPurchases;
@@ -23,11 +27,14 @@ public class CreditScreenAdapter extends BaseAdapter {
     ArrayList<InAppPurchases.Message> inapps;
     Context mContext;
     UserSession userSession;
-
-    public CreditScreenAdapter(Context mContext, ArrayList<InAppPurchases.Message> inapps) {
+    BillingProcessor bp;
+    Activity activity;
+    public CreditScreenAdapter(Context mContext, ArrayList<InAppPurchases.Message> inapps, BillingProcessor bp, Activity activity) {
         this.mContext = mContext;
         this.inapps = inapps;
         userSession = new UserSession(mContext);
+        this.bp = bp;
+        this.activity = activity;
     }
 
     @Override
@@ -78,7 +85,7 @@ public class CreditScreenAdapter extends BaseAdapter {
                     intent.putExtra("advisor_name", advisorname);
                     mContext.startActivity(intent);
 */
-
+                bp.purchase(activity,inapps.get(position).getProductId());
 
 
                 }

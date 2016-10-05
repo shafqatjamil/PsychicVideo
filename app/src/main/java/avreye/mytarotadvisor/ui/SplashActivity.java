@@ -11,13 +11,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import Billing.IabHelper;
-import Billing.IabResult;
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
-import avreye.mytarotadvisor.Object.InAppPurchases;
-import avreye.mytarotadvisor.Object.LoginResponse;
 import avreye.mytarotadvisor.Object.Message;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.PubnubService;
@@ -25,7 +19,6 @@ import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.helper.APIService;
 import avreye.mytarotadvisor.helper.DatabaseHelper;
 import avreye.mytarotadvisor.helper.UserSession;
-import avreye.mytarotadvisor.ui.credentail.ClientLoginActivity;
 import avreye.mytarotadvisor.ui.credentail.RegisterationActivity;
 import avreye.mytarotadvisor.utils.Constants;
 import retrofit2.Call;
@@ -37,7 +30,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SplashActivity extends AppCompatActivity {
 
     private static final String TAG = "SplashScreen";
-    public static IabHelper mHelper;
     Retrofit retrofit;
     private DatabaseHelper databaseHelper;
     private Retrofit retrofit1;
@@ -67,48 +59,6 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
         }
         ////////////////////
-        String base64EncodedPublicKey = "MIIBIjANBgk" +
-                "qhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmr1RaSYlG" +
-                "CTabAd30BmmvJ6TDHP7iuakVU1GL/yEnGeM8A40t" +
-                "DPd3ArypawO/6uxgp5ZGv+5vg3CuftqAZEDOTXSP/" +
-                "Ge8U32lbmpORlYVtSEIdBC77ISIKWyrowcE9kIaPu2ucu" +
-                "wdlq3Lh31YvFsuRoELBe8flg9qtbfswAnp5FTMFiFR99" +
-                "k9rcgwHk81kpThcWBEtok4nbk6kBOtY3MyMOyD429X2qev" +
-                "pJyI/MLsLPZMH5HDv1QWh/O00vpQ3Sh4Xbo9a+gM3nq0AOx/qN" +
-                "w/CUi0Jiqh0YjlPsQHMvPiEMsbIbqwse0f8llhVvIIyFY6wD/OMDya" +
-                "7+Ng7/M/OZZ5QIDAQAB";
-
-        // compute your public key and store it in base64EncodedPublicKey
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    Log.e(TAG, "Problem setting up In-app Billing: " + result);
-                    ArrayList<String> list = new ArrayList<>();
-                    list.add("com.liquidsoftwaremobile.mytarotadvisor.credit1");
-
-
-//                    IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
-//                        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-//                            if (result.isFailure()) {
-//                                Log.e(TAG, "Problem setting up In-app Billing errorwhile querying: " + result);
-//                                return;
-//                            }
-//                            String applePrice = inventory.getSkuDetails("com.liquidsoftwaremobile.mytarotadvisor.credit1").getPrice();
-//                            Log.e(TAG, "price: " + applePrice);
-//                        }
-//                    };
-                    //   mHelper.queryInventoryAsync(true, list, null);
-                } else {
-                    Log.e(TAG, "Successful setting up In-app Billing: " + result);
-                }
-                // Hooray, IAB is fully set up!
-            }
-        });
-
-
-
 
     }
 

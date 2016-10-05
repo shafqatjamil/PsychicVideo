@@ -17,16 +17,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.appboy.Appboy;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import Billing.IabHelper;
-import Billing.IabResult;
-import Billing.Inventory;
 import avreye.mytarotadvisor.Object.InAppPurchases;
 import avreye.mytarotadvisor.Object.LoginResponse;
+import avreye.mytarotadvisor.Object.MessageHistoryResponse;
+import avreye.mytarotadvisor.Object.UpdateCreditResponse;
 import avreye.mytarotadvisor.PubnubService;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.adapter.CreditScreenAdapter;
@@ -40,7 +41,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler{
+
+    BillingProcessor bp;
+
 
     private static final String TAG = "CreditsScreen";
     CreditScreenAdapter creditScreenAdapter;
@@ -49,16 +53,34 @@ public class CreditsActivity extends AppCompatActivity {
     TextView textView_my_credits;
     TextView textView_message;
     Retrofit retrofit;
+    Retrofit retrofit1;
     TextView textView_title;
     private TextView headerTitle;
     private TextView MyCredits;
     private Toolbar toolbar;
     ImageButton imageButton_back;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+        String base64EncodedPublicKey = "MIIBIjANBgk" +
+                "qhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmr1RaSYlG" +
+                "CTabAd30BmmvJ6TDHP7iuakVU1GL/yEnGeM8A40t" +
+                "DPd3ArypawO/6uxgp5ZGv+5vg3CuftqAZEDOTXSP/" +
+                "Ge8U32lbmpORlYVtSEIdBC77ISIKWyrowcE9kIaPu2ucu" +
+                "wdlq3Lh31YvFsuRoELBe8flg9qtbfswAnp5FTMFiFR99" +
+                "k9rcgwHk81kpThcWBEtok4nbk6kBOtY3MyMOyD429X2qev" +
+                "pJyI/MLsLPZMH5HDv1QWh/O00vpQ3Sh4Xbo9a+gM3nq0AOx/qN" +
+                "w/CUi0Jiqh0YjlPsQHMvPiEMsbIbqwse0f8llhVvIIyFY6wD/OMDya" +
+                "7+Ng7/M/OZZ5QIDAQAB";
+
+        bp = new BillingProcessor(this, base64EncodedPublicKey,"12658234756384564268", this);
+////////////////////////////////////////////////////////////////////////////////////////////////////
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -123,23 +145,7 @@ public class CreditsActivity extends AppCompatActivity {
 
 
 
-        IabHelper.QueryInventoryFinishedListener mGotInventoryListener
-                = new IabHelper.QueryInventoryFinishedListener() {
-            public void onQueryInventoryFinished(IabResult result,
-                                                 Inventory inventory) {
 
-                if (result.isFailure()) {
-                    Log.e(TAG, "fail setting up In-app Billing: " + result);
-                }
-                else {
-                    // does the user have the premium upgrade?
-                   // mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
-                    // update UI accordingly
-                    Log.e(TAG, "Successful setting up In-app Billing: " + result + inventory.getSkuDetails("com.liquidsoftwaremobile.mytarotadvisor.credit1"));
-                }
-            }
-        };
-        SplashActivity.mHelper.queryInventoryAsync(mGotInventoryListener);
         /////////////////////////////////////////////////////
 
         retrofit = new Retrofit.Builder()
@@ -147,10 +153,15 @@ public class CreditsActivity extends AppCompatActivity {
                 //  .client(defaultHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        retrofit1 = new Retrofit.Builder()
+                .baseUrl(Constants.CLIENT_API_BASE_URL)
+                //  .client(defaultHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         inapps = new ArrayList<InAppPurchases.Message>();
         inapplist = (ListView) findViewById(R.id.credits_list_view);
-        creditScreenAdapter = new CreditScreenAdapter(this, inapps);
+        creditScreenAdapter = new CreditScreenAdapter(this, inapps,bp,this);
         assert inapplist != null;
         inapplist.setAdapter(creditScreenAdapter);
         HitAPI();
@@ -170,7 +181,13 @@ public class CreditsActivity extends AppCompatActivity {
         super.onStop();
         Appboy.getInstance(CreditsActivity.this).closeSession(CreditsActivity.this);
     }
+    @Override
+    public void onDestroy() {
+        if (bp != null)
+            bp.release();
 
+        super.onDestroy();
+    }
     void HitAPI() {
         APIService apiservice = retrofit.create(APIService.class);
         Call<InAppPurchases> APICall = apiservice.GetCreditsDetail();
@@ -194,6 +211,89 @@ public class CreditsActivity extends AppCompatActivity {
             public void onFailure(Call<InAppPurchases> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!bp.handleActivityResult(requestCode, resultCode, data))
+            super.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public void onBillingInitialized() {
+        /*
+         * Called when BillingProcessor was initialized and it's ready to purchase
+         */
+        Log.e("CreditScreen","billing initialized");
+        SkuDetails skuDetails =  bp.getPurchaseListingDetails("com.liquidsoftwaremobile.mytarotadvisor.credit1");
+        Log.e("CreditScreen",skuDetails.title);
+    }
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        /*
+         * Called when requested PRODUCT ID was successfully purchased
+         */
+        Log.e("CreditScreen","Product Purchased");
+        if(productId.contains("com.liquidsoftwaremobile.mytarotadvisor.credit1"))
+        {
+            int temp =  Integer.parseInt(new UserSession(CreditsActivity.this).getUserCredits());
+            temp += 450;
+            new UserSession(CreditsActivity.this).setUserCredits(temp+"");
+
+            MyCredits.setText(new UserSession(this).getUserCredits().toString());
+            UpdateCredits(new UserSession(CreditsActivity.this).getUserId(),temp+"");
+            bp.consumePurchase(productId);
+        }
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        /*
+         * Called when some error occurred. See Constants class for more details
+         *
+         * Note - this includes handling the case where the user canceled the buy dialog:
+         * errorCode = Constants.BILLING_RESPONSE_RESULT_USER_CANCELED
+         */
+        Log.e("CreditScreen","onBillingError Called");
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        /*
+         * Called when purchase history was restored and the list of all owned PRODUCT ID's
+         * was loaded from Google Play
+         */
+        Log.e("CreditScreen","onPurchaseHistoryRestored Called");
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    void UpdateCredits(final String id, final String credits) {
+
+        APIService apiservice = retrofit1.create(APIService.class);
+        Call<UpdateCreditResponse> APICall = apiservice.updateCredits(id, credits);
+        APICall.enqueue(new Callback<UpdateCreditResponse>() {
+            @Override
+            public void onResponse(Call<UpdateCreditResponse> call, Response<UpdateCreditResponse> response) {
+                if (response.body() != null) {
+
+                    if (response.body().getResult() == 1) {
+
+                        Log.e("CreditScreen","Credits Updated");
+                       // Intent intent = new Intent(CreditsActivity.this,MainActivity.class);
+                        //CreditsActivity.this.startActivity(intent);
+
+                    } else {
+                        Log.e("CreditScreen" ,"Credits Updated error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateCreditResponse> call, Throwable t) {
+                Log.e("CreditScreen" ,"Credits Updated filure");
             }
         });
     }

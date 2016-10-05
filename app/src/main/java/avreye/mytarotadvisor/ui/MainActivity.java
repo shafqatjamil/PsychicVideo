@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity
 
             mMessageCenter = null;
         } else {
-            String sourceString = "<i>MY</i>" + "<b>" + "ORDERS" + "</b> ";
+            String sourceString = "MY " + "<b>" + "ORDERS" + "</b> ";
             headerTitle.setGravity(Gravity.CENTER);
             headerTitle.setText(Html.fromHtml(sourceString));
             menu.getItem(0).setVisible(false);

@@ -82,6 +82,7 @@ import avreye.mytarotadvisor.AppController;
 import avreye.mytarotadvisor.Object.AdvisorInfo;
 import avreye.mytarotadvisor.Object.MessageHistoryResponse;
 import avreye.mytarotadvisor.Object.Payload;
+import avreye.mytarotadvisor.Object.UpdateCreditResponse;
 import avreye.mytarotadvisor.R;
 import avreye.mytarotadvisor.helper.APIService;
 import avreye.mytarotadvisor.helper.DatabaseHelper;
@@ -675,10 +676,10 @@ public class ClientSendMessage extends AppCompatActivity {
 
     void UpdateCredits(final String id, final String credits) {
         APIService apiservice = retrofit.create(APIService.class);
-        Call<MessageHistoryResponse> APICall = apiservice.updateCredits(id, credits);
-        APICall.enqueue(new retrofit2.Callback<MessageHistoryResponse>() {
+        Call<UpdateCreditResponse> APICall = apiservice.updateCredits(id, credits);
+        APICall.enqueue(new retrofit2.Callback<UpdateCreditResponse>() {
             @Override
-            public void onResponse(Call<MessageHistoryResponse> call, Response<MessageHistoryResponse> response) {
+            public void onResponse(Call<UpdateCreditResponse> call, Response<UpdateCreditResponse> response) {
 
                 if (response.body() != null) {
 
@@ -691,7 +692,7 @@ public class ClientSendMessage extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<MessageHistoryResponse> call, Throwable t) {
+            public void onFailure(Call<UpdateCreditResponse> call, Throwable t) {
                 //     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 //     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
