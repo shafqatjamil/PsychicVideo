@@ -93,6 +93,7 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
     TextView cost_info;
     Retrofit retrofit;
     Retrofit retrofit1;
+    Retrofit retrofit_messages;
     private ProgressDialog progressDialog;
     ImageButton imageButoon_Camera;
     ImageButton imageButoon_Send;
@@ -140,6 +141,8 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
         AdvisorName = getIntent().getStringExtra("advisor_name");
         AdvisorID = getIntent().getStringExtra("advisor_id");
 
+
+
         imageButoon_Camera = (ImageButton) findViewById(R.id.video_capture_advisor);
         imageButoon_Send = (ImageButton) findViewById(R.id.imagebutoon_send);
 
@@ -164,10 +167,21 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
                 //  .client(defaultHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        retrofit_messages = new Retrofit.Builder()
+                .baseUrl(Constants.MESSAGE_API_URL)
+                //  .client(defaultHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
         databaseHelper = new DatabaseHelper(this);
         messages = databaseHelper.getAllMessages(AdvisorID);
 
         advisorChatActivityAdapter = new AdvisorChatActivityAdapter(this,messages,userSession.getUserId(),userSession.getUserId());
+        if(getIntent().getStringExtra("from_notification") != null && !getIntent().getStringExtra("from_notification").isEmpty())
+        {
+            getLatestMessages(userSession.getUserId(),userSession.getUserType(),databaseHelper.getLatestMessageId());
+        }
+
+
         assert messageList != null;
         messageList.setAdapter(advisorChatActivityAdapter);
         messageList.setSelection(advisorChatActivityAdapter.getCount() - 1);
@@ -206,11 +220,6 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
 
         //////////////////////////////////////
         transferUtility = Util.getTransferUtility(this);
-        credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),    /* get the context for the application */
-                Constants.COGNITO_POOL_ID,    /* Identity Pool ID */
-                Regions.US_EAST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
-        );
     }
     void send_message()
     {
@@ -597,7 +606,10 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
     private class S3Example extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AWS_ACCESS_KEY, Constants.AWS_SECRET_KEY));
+            s3Client = new AmazonS3Client(new CognitoCachingCredentialsProvider(
+                    getApplicationContext(),
+                    Constants.COGNITO_POOL_ID,
+                    Regions.US_EAST_1));
             File fileToUpload = file;
             String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             mydate = mydate.replaceAll("\\s", "");
@@ -635,6 +647,60 @@ public class ChatActivityforAdvisor extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
         }
+    }
+    void getLatestMessages(final String id, final String type, final String msg_id) {
+        Log.e("test" , id + "  " + type);
+        APIService apiservice = retrofit_messages.create(APIService.class);
+        Call<MessageHistoryResponse> APICall = apiservice.getHistoryFromid(id, type, msg_id);
+        APICall.enqueue(new retrofit2.Callback<MessageHistoryResponse>() {
+            @Override
+            public void onResponse(Call<MessageHistoryResponse> call, Response<MessageHistoryResponse> response) {
+
+                if (response.body() != null) {
+
+                    if (response.body().getResult() == 1) {
+                        ArrayList<MessageHistoryResponse.Message> Hmessages = response.body().getMessage();
+                        databaseHelper.FlushDatabase();
+                        for(int i = 0; i < Hmessages.size(); i++)
+                        {
+                            databaseHelper.insertMessageToDB((new Message(
+                                    Integer.parseInt(Hmessages.get(i).getId()),
+                                    Hmessages.get(i).getSenderId(),
+                                    Hmessages.get(i).getSenderDisplayname(),
+                                    Hmessages.get(i).getReceiverId(),
+                                    Hmessages.get(i).getReceiverDisplayname(),
+                                    Hmessages.get(i).getMsgText(),
+                                    Hmessages.get(i).getMsgDate(),
+                                    Integer.parseInt(Hmessages.get(i).getStatus()),
+                                    Hmessages.get(i).getVideoUrl(),
+                                    Hmessages.get(i).getMessageType(),
+                                    Hmessages.get(i).getSenderType(),
+                                    Hmessages.get(i).getReceiverType(),
+                                    Hmessages.get(i).getReviewStatus(),
+                                    Hmessages.get(i).getMessageReviewId(),
+                                    ""+( Integer.parseInt(Hmessages.get(i).getReceiverId()) + Integer.parseInt(Hmessages.get(i).getSenderId())),
+                                    Hmessages.get(i).getClientDob()
+                            )));
+
+
+                        }
+
+                        messages = databaseHelper.getAllMessages(AdvisorID);
+                        advisorChatActivityAdapter.SetMessagesArrayList(messages);
+                        advisorChatActivityAdapter.notifyDataSetChanged();
+                        messageList.setSelection(advisorChatActivityAdapter.getCount() - 1);
+
+                    } else {
+                        Log.e("message history" ,"error");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageHistoryResponse> call, Throwable t) {
+            }
+        });
     }
 
 }

@@ -62,6 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Bundle bundle = new Bundle();
             bundle.putString("advisor_id",sendid);
             bundle.putString("advisor_name",senderdiplayname);
+            bundle.putString("from_notification","from_notification");
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
              pendingIntent = PendingIntent.getActivity(this, nid++, intent,
@@ -73,6 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Bundle bundle = new Bundle();
             bundle.putString("advisor_id",sendid);
             bundle.putString("advisor_name",senderdiplayname);
+            bundle.putString("from_notification","from_notification");
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

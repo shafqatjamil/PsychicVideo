@@ -1,5 +1,6 @@
 package avreye.mytarotadvisor.helper;
 import avreye.mytarotadvisor.Object.AdvisorProfilePictureResponse;
+import avreye.mytarotadvisor.Object.CheckVersionResponse;
 import avreye.mytarotadvisor.Object.GetAdvisorStatusReponse;
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
 import avreye.mytarotadvisor.Object.GetTarotResponse;
@@ -82,6 +83,10 @@ public interface APIService {
     Call<MessageHistoryResponse> getHistory(@Field("id") String id, @Field("type") String type);
 
     @FormUrlEncoded
+    @POST("history_v2")
+    Call<MessageHistoryResponse> getHistoryFromid(@Field("id") String id, @Field("type") String type,@Field("msg_id") String msg_id);
+
+    @FormUrlEncoded
     @POST("updateCredits")
     Call<UpdateCreditResponse> updateCredits(@Field("id") String id, @Field("total_credit") String credits);
 
@@ -108,5 +113,8 @@ public interface APIService {
     @FormUrlEncoded
     @POST("applyPromocode")
     Call<PromoCodeReponse> applyPromocode(@Field("user_id") String user_id, @Field("promocode") String promocode);
+
+    @GET("getVersion")
+    Call<CheckVersionResponse> checkVersion();
 
 }

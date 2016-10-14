@@ -231,8 +231,8 @@ public class AdvisorChatActivityAdapter extends BaseAdapter {
                 viewHolder.textView_text_outer.setVisibility(View.GONE);
                 viewHolder.textView_text.setVisibility(View.GONE);
 
-                Log.e("video name", UserList.get(position).getUrl());
-                String str1 = UserList.get(position).getUrl().replace("https://s3.amazonaws.com/studiosbucket/", "");
+                String[] strs = UserList.get(position).getUrl().split("/");
+                String str1 = strs[strs.length-1];//UserList.get(position).getUrl().replace("https://s3.amazonaws.com/studiosbucket/", "");
                 String str2 = str1.replace(".mp4", "");
                 Picasso.with(mContext)
                         .load(UserSession.getInstance(mContext).getThumbnailUri(str2 + ".png"))

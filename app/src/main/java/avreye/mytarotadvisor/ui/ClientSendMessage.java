@@ -50,6 +50,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -111,7 +112,6 @@ public class ClientSendMessage extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     FrameLayout frameLayout_recordedVideo;
     Context mContext;
-    CognitoCachingCredentialsProvider credentialsProvider;
     static final int REQUEST_VIDEO_CAPTURE = 9000;
     private final static int CAMERA_RQ = 6969;
     AmazonS3Client s3Client;
@@ -160,12 +160,6 @@ public class ClientSendMessage extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.client_send_message__instruction);
         textView.setText(Html.fromHtml(unescapeJavaString(getIntent().getStringExtra("advisor_instruction"))));
 
-        transferUtility = Util.getTransferUtility(this);
-        credentialsProvider = new CognitoCachingCredentialsProvider(
-                getApplicationContext(),    /* get the context for the application */
-                Constants.COGNITO_POOL_ID,    /* Identity Pool ID */
-                Regions.US_EAST_1           /* Region for your identity pool--US_EAST_1 or EU_WEST_1*/
-        );
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.CLIENT_API_BASE_URL)
                 //  .client(defaultHttpClient)
@@ -315,6 +309,15 @@ public class ClientSendMessage extends AppCompatActivity {
                 }
             }
         });
+
+        s3Client = new AmazonS3Client(new CognitoCachingCredentialsProvider(
+                ClientSendMessage.this,
+                Constants.COGNITO_POOL_ID,
+                Regions.US_EAST_1
+        ));
+        s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
+        transferUtility = new TransferUtility(s3Client, getApplicationContext());
+
 
     }
 
@@ -480,7 +483,7 @@ public class ClientSendMessage extends AppCompatActivity {
             if (requestCode == CAMERA_RQ) {
 
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, "Saved to: " + data.getDataString(), Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(this, "Saved to: " + data.getDataString(), Toast.LENGTH_LONG).show();
 
                     button_record_video.setVisibility(View.GONE);
                     frameLayout_recordedVideo.setVisibility(View.VISIBLE);
@@ -495,7 +498,7 @@ public class ClientSendMessage extends AppCompatActivity {
                 } else if(data != null) {
                     Exception e = (Exception) data.getSerializableExtra(MaterialCamera.ERROR_EXTRA);
                     e.printStackTrace();
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -624,7 +627,12 @@ public class ClientSendMessage extends AppCompatActivity {
     private class S3Example extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            s3Client = new AmazonS3Client(new BasicAWSCredentials(Constants.AWS_ACCESS_KEY, Constants.AWS_SECRET_KEY));
+//            s3Client = new AmazonS3Client(new CognitoCachingCredentialsProvider(
+//                    ClientSendMessage.this,
+//                    Constants.COGNITO_POOL_ID,
+//                    Regions.EU_WEST_1
+//            ));
+//            s3Client.setRegion(Region.getRegion(Regions.EU_WEST_1));
             File fileToUpload = file;
             String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             mydate = mydate.replaceAll("\\s", "");
@@ -640,7 +648,6 @@ public class ClientSendMessage extends AppCompatActivity {
                     }
 
                 }
-
                 @Override
                 public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
                     Log.d("Uploading", String.format("onProgressChanged: %d, total: %d, current: %d",

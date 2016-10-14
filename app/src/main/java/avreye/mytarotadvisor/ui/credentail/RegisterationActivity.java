@@ -1,16 +1,21 @@
 package avreye.mytarotadvisor.ui.credentail;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -87,10 +92,14 @@ public class RegisterationActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
+                    InputMethodManager imm = (InputMethodManager) RegisterationActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                    Log.e("Registration Activity","on edit touch");
                     setDate(editText_dob);
                 }
             }
         });
+
         button_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +248,15 @@ public class RegisterationActivity extends AppCompatActivity {
 
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
+        InputMethodManager imm = (InputMethodManager) RegisterationActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view1 = RegisterationActivity.this.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view1 == null) {
+            view1 = new View(RegisterationActivity.this);
+        }
+
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         showDialog(999);
 
     }
@@ -326,5 +344,12 @@ public class RegisterationActivity extends AppCompatActivity {
         }
 
         return a;
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

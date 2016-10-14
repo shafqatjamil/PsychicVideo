@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 
 		String CREATE_FAVOURITE_TABLE = "CREATE TABLE " + TABLE_MESSAGE + "("
-				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ KEY_ID + " INTEGER,"// PRIMARY KEY AUTOINCREMENT
 				+ KEY_SENDER_ID + " TEXT,"
                 + KEY_SENDER_DISPLAY_NAME + " TEXT,"
                 + KEY_RECIEVER_ID + " TEXT,"
@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues cv = new ContentValues();
-		//cv.put(KEY_ID, message.getId());
+		cv.put(KEY_ID, message.getId());
         cv.put(KEY_SENDER_ID, message.getSender_id());
         cv.put(KEY_SENDER_DISPLAY_NAME, message.getSender_display_name());
         cv.put(KEY_RECIEVER_ID, message.getReciever_id());
@@ -324,6 +324,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		}
 		else
 		return false;
+	}
+	public String getLatestMessageId()
+	{
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(TABLE_MESSAGE, null, null, null, null, null,KEY_ID +" DESC", "1");
+		cursor.moveToFirst();
+		if (cursor.getCount() > 0) {
+			return  cursor.getInt(0) + " ";
+		}
+		return "0";
 	}
    /* public String isChatExist(String sender_id, String reciever_id)
     {

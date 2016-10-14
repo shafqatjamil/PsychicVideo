@@ -227,8 +227,8 @@ public class CreditsActivity extends AppCompatActivity implements BillingProcess
          * Called when BillingProcessor was initialized and it's ready to purchase
          */
         Log.e("CreditScreen","billing initialized");
-        SkuDetails skuDetails =  bp.getPurchaseListingDetails("com.liquidsoftwaremobile.mytarotadvisor.credit1");
-        Log.e("CreditScreen",skuDetails.title);
+      //  SkuDetails skuDetails =  bp.getPurchaseListingDetails("com.liquidsoftwaremobile.mytarotadvisor.credit1");
+      //  Log.e("CreditScreen",skuDetails.title);
     }
 
     @Override
@@ -241,6 +241,34 @@ public class CreditsActivity extends AppCompatActivity implements BillingProcess
         {
             int temp =  Integer.parseInt(new UserSession(CreditsActivity.this).getUserCredits());
             temp += 450;
+            new UserSession(CreditsActivity.this).setUserCredits(temp+"");
+
+            MyCredits.setText(new UserSession(this).getUserCredits().toString());
+            UpdateCredits(new UserSession(CreditsActivity.this).getUserId(),temp+"");
+            bp.consumePurchase(productId);
+        }
+        else if(productId.contains("com.liquidsoftwaremobile.mytarotadvisor.credit2"))
+        {
+            int temp =  Integer.parseInt(new UserSession(CreditsActivity.this).getUserCredits());
+            temp += 1000;
+            new UserSession(CreditsActivity.this).setUserCredits(temp+"");
+
+            MyCredits.setText(new UserSession(this).getUserCredits().toString());
+            UpdateCredits(new UserSession(CreditsActivity.this).getUserId(),temp+"");
+            bp.consumePurchase(productId);
+        }else if(productId.contains("com.liquidsoftwaremobile.mytarotadvisor.credit3"))
+        {
+            int temp =  Integer.parseInt(new UserSession(CreditsActivity.this).getUserCredits());
+            temp += 1950;
+            new UserSession(CreditsActivity.this).setUserCredits(temp+"");
+
+            MyCredits.setText(new UserSession(this).getUserCredits().toString());
+            UpdateCredits(new UserSession(CreditsActivity.this).getUserId(),temp+"");
+            bp.consumePurchase(productId);
+        }else if(productId.contains("com.liquidsoftwaremobile.mytarotadvisor.credit"))
+        {
+            int temp =  Integer.parseInt(new UserSession(CreditsActivity.this).getUserCredits());
+            temp += 3300;
             new UserSession(CreditsActivity.this).setUserCredits(temp+"");
 
             MyCredits.setText(new UserSession(this).getUserCredits().toString());

@@ -47,7 +47,7 @@
             android:name=".ui.credentail.RegisterationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
@@ -177,7 +177,6 @@
         <activity
             android:name=".ui.AdvisorRating"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".ui.SettingActivity"
             android:screenOrientation="portrait"
@@ -188,10 +187,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainScreenTheme"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ui.PromoCodeActivity"
+        <activity
+            android:name=".ui.PromoCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainScreenTheme"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ui.UpdateAppActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainScreenTheme"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

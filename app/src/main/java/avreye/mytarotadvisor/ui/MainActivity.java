@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -48,6 +49,7 @@ import com.squareup.picasso.Picasso;
 
 import avreye.mytarotadvisor.AppController;
 import avreye.mytarotadvisor.Object.AdvisorProfilePictureResponse;
+import avreye.mytarotadvisor.Object.CheckVersionResponse;
 import avreye.mytarotadvisor.Object.GetMyCreditsResponse;
 import avreye.mytarotadvisor.Object.PromoCodeReponse;
 import avreye.mytarotadvisor.PubnubService;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     private Retrofit retrofit;
     private Retrofit retrofit1;
     private Retrofit retrofit_Coupon;
+    private Retrofit retrofit_Update;
     boolean flag;
     ClickableImageView imageView1;
     ClickableImageView imageView2;
@@ -276,6 +279,11 @@ public class MainActivity extends AppCompatActivity
                 .build();
         retrofit_Coupon = new Retrofit.Builder()
                 .baseUrl(Constants.Promocode_API_URL)
+                //  .client(defaultHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofit_Update = new Retrofit.Builder()
+                .baseUrl(Constants.Application_API_URL)
                 //  .client(defaultHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -574,6 +582,7 @@ public class MainActivity extends AppCompatActivity
             GetMyCredits(mUserSession.getUserId());
             isCouponAvailable();
         }
+        checkVersion();
     }
     void GetMyCredits(final String id) {
         APIService apiservice = retrofit.create(APIService.class);
@@ -683,6 +692,45 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<GetMyCreditsResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    void checkVersion()
+    {
+        APIService apiservice = retrofit_Update.create(APIService.class);
+        Call<CheckVersionResponse> APICall = apiservice.checkVersion();
+        APICall.enqueue(new Callback<CheckVersionResponse>() {
+            @Override
+            public void onResponse(Call<CheckVersionResponse> call, Response<CheckVersionResponse> response) {
+
+                if (response.body() != null) {
+
+                    if (response.body().getResult() == 1) {
+
+                        PackageInfo pInfo = null;
+                        try {
+                            pInfo =MainActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                        String verCode = pInfo.versionCode+"";
+                        if(!response.body().getMessage().contains(verCode))
+                        {
+                            MainActivity.this.finish();
+                            Intent intent = new Intent(MainActivity.this, UpdateAppActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        Log.e("message history" ,"error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckVersionResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
